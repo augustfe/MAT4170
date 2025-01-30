@@ -60,3 +60,42 @@
     \end{equation*}
     as we wanted to show.
 \end{solution}
+
+\begin{exercise}
+    We might also want to convert a polynomial from monomial form to BB form.
+    Using Lemma 1.2, show that in the notation of the previous question,
+    \begin{equation*}
+        c_i = \frac{i!}{d!} \sum_{j=0}^i \frac{(d - j)!}{(i - j)!} a_j.
+    \end{equation*}
+\end{exercise}
+
+\begin{solution}
+    Lemma~1.2 states that for $j = 0, 1, \ldots, d$,
+    \begin{equation*}
+        x^j = \frac{(d - j)!}{d!} \sum_{i = j}^d \frac{i!}{(i - j)!} B_i^d(x).
+    \end{equation*}
+
+    We have that
+    \begin{gather*}
+        \sum_{j = 0}^d a_j x^j = \sum_{i = 0}^d c_i B_i^d(x) \\
+        \sum_{j = 0}^d a_j \left[
+            \frac{(d - j)!}{d!} \sum_{i = j}^d \frac{i!}{(i - j)!} B_i^d(x)
+        \right]
+        = \sum_{i = 0}^d c_i B_i^d(x) \\
+    \end{gather*}
+    As we have $i \geq j$, we can reorder the summation to the form $j \leq i$, by using
+    \begin{equation*}
+        \sum_{j = 0}^d \sum_{i = j}^d (\ldots) = \sum_{i = 0}^d \sum_{j = 0}^i (\ldots).
+    \end{equation*}
+    This gives us
+    \begin{equation*}
+        \sum_{i = 0}^d \left[
+            \sum_{j = 0}^i a_j \frac{(d - j)!}{d!} \frac{i!}{(i - j)!}
+        \right] B_i^d(x) = \sum_{i = 0}^d c_i B_i^d(x).
+    \end{equation*}
+    Which by isolating the coefficients, gives us
+    \begin{equation*}
+        c_i = \frac{i!}{d!} \sum_{j = 0}^i \frac{(d - j)!}{(i - j)!} a_j,
+    \end{equation*}
+    as we wanted to show.
+\end{solution}
