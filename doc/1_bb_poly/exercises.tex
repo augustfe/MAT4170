@@ -19,3 +19,44 @@
         &= c_0 + (-2c_0 + 2c_1) x + (c_0 - 2c_1 + c_2) x^2.
     \end{align*}
 \end{solution}
+
+\begin{exercise}
+    Consider a polynomial $p(x)$ of degree $\leq d$, for arbitrary $d$.
+    Show that if
+    \begin{equation*}
+        p(x) = \sum_{j=0}^d a_j x^j = \sum_{i=0}^d c_i B_i^d(x),
+    \end{equation*}
+    then
+    \begin{equation*}
+        a_j = \binom{d}{j} \Delta^j c_0.
+    \end{equation*}
+    \textit{Hint:} Use a Taylor approximation to $p$ to show that $a_j = p^{(j)}(0)/j!$. % chktex 40
+\end{exercise}
+
+\begin{solution}
+    We have that
+    \begin{equation*}
+        p(x) = \sum_{j=0}^d a_j x^j = \sum_{i=0}^d c_i B_i^d(x).
+    \end{equation*}
+    By the Taylor approximation, we have that
+    \begin{equation*}
+        p(x) = p(x + 0) = \sum_{j=0}^d \frac{p^{(j)}(0)}{j!} x^j.
+    \end{equation*}
+    We thus have that
+    \begin{equation*}
+        a_j = \frac{p^{(j)}(0)}{j!}.
+    \end{equation*}
+    By properties of the Bézier curves, we have that
+    \begin{equation*}
+        p^{(j)}(x) = \frac{d!}{(d-j)!} \sum_{i = 0}^{d - j} \Delta^j c_i B_i^{d-j}(x),
+    \end{equation*}
+    and specifically for $x = 0$,
+    \begin{equation*}
+        p^{(j)}(0) = \frac{d!}{(d-j)!} \Delta^j c_0.
+    \end{equation*}
+    Combining these results, we have that
+    \begin{equation*}
+        a_j = \frac{p^{(j)}(0)}{j!} = \frac{d!}{(d-j)! j!} \Delta^j c_0 = \binom{d}{j} \Delta^j c_0,
+    \end{equation*}
+    as we wanted to show.
+\end{solution}
