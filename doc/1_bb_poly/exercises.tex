@@ -148,3 +148,69 @@
     \end{equation*}
     where $\boldsymbol{c}_i = (\xi_i, c_i)$ are the control points of the Bézier curve.
 \end{solution}
+
+\begin{exercise}
+    Show that the tangent vector $\boldsymbol{p}'(x)$ of the Bézier curve in (1.6) lies in the convex cone of the vectors $\Delta \boldsymbol{c}_i$, i.e., in
+    \begin{equation*}
+        \text{cone}(\Delta \boldsymbol{c}_0, \ldots, \Delta \boldsymbol{c}_{d-1})
+        = \left\{
+            \sum_{i = 0}^{d-1} \mu_i \Delta \boldsymbol{c}_i
+            : \mu_1, \ldots, \mu_{d-1} \geq 0
+        \right\}.
+    \end{equation*}
+\end{exercise}
+
+\begin{solution}
+    The derivative (or perhaps \textit{gradient} is the correct term) of the Bézier curve $\boldsymbol{p}(x)$ is given by
+    \begin{equation*}
+        \boldsymbol{p}'(x)
+        = d \sum_{i = 0}^{d-1} \left(
+            \boldsymbol{c}_{i+1} - \boldsymbol{c}_i
+        \right) B_i^{d-1}(x)
+        = d \sum_{i = 0}^{d-1} \Delta \boldsymbol{c}_i B_i^{d-1}(x).
+    \end{equation*}
+    As $B_i^{d-1}(x) \geq 0$ for $x \in [0, 1]$, we can set $\mu_i = d B_i^{d-1}(x)$, and we have that
+    \begin{equation*}
+        \boldsymbol{p}'(x) = \sum_{i = 0}^{d-1} \mu_i \Delta \boldsymbol{c}_i \in \text{cone}(\Delta \boldsymbol{c}_0, \ldots, \Delta \boldsymbol{c}_{d-1}),
+    \end{equation*}
+    as we wanted to show.
+\end{solution}
+
+\begin{exercise}
+    Show that the first derivative of $p$ in~(1.6) can be expressed (and computed) as
+    \begin{equation*}
+        p'(x) = d(c_{1}^{d-1} - c_{0}^{d-1}),
+    \end{equation*}
+    where $c_{1}^{d-1}, c_{0}^{d-1}$ are the points of order $d-1$ in de Casteljau's algorithm~(1.10).
+\end{exercise}
+
+\begin{solution}
+    We have that
+    \begin{equation*}
+        p(x) = c_0^d = (1 - x) c_0^{d-1} + x c_1^{d-1},
+    \end{equation*}
+    and thus by differentiating with respect to $x$, we have that
+    \begin{equation*}
+        p'(x) = c_1^{d-1} - c_0^{d-1}.
+    \end{equation*}
+    This tells us that we cannot be as naive as this, as $c_0^d$ is actually a function of $x$, and not simply a constant.
+
+    What we might instead need to note is that
+    \begin{equation*}
+        c_i^r = \sum_{j = 0}^r c_{i+j} B_j^r(x),
+    \end{equation*}
+    and combining this with the fact that
+    \begin{equation*}
+        \left( B_i^d \right)'(x) = d \left( B_{i-1}^{d-1} - B_i^{d-1} \right)(x),
+    \end{equation*}
+    we have that
+    \begin{align*}
+        p'(x)
+        &= d \sum_{i = 0}^{d-1} \left( c_{i+1} - c_i \right) B_i^{d-1}(x)
+        = d \left[
+            \sum_{i = 0}^{d-1} c_{i+1} B_i^{d-1}(x) - \sum_{i = 0}^{d-1} c_i B_i^{d-1}(x)
+        \right] \\
+        &= d(c_{1}^{d-1} - c_{0}^{d-1}),
+    \end{align*}
+    as we wanted to show.
+\end{solution}
