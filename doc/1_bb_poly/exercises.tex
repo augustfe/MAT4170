@@ -117,10 +117,34 @@
         \item The last value $c_0^d$ is the value of the Bézier curve at $x$.
     \end{enumerate}
 
-    This is implemented using Jax in Python in \verb|de_casteljau.py|, and the result is shown in Figure~\ref{fig:de_casteljau}, bearing striking resemblance to the figure in the book.
-    \begin{figure}[!h]
+    This is implemented using Jax in Python in \verb|de_casteljau.py|, and the result is shown in Figure~\ref{fig:de_casteljau}, bearing a striking resemblance to the figure in the book.
+    \begin{figure}[!ht]
         \centering
         \includegraphics[width=0.6\textwidth]{1_bb_poly/de_casteljau.pdf}
         \caption{The de Casteljau algorithm applied to a cubic Bézier curve, with control points $(0.2, 0.4, -0.1, 0.5)$, illustrated at the point $x = 0.6$.\label{fig:de_casteljau}}
     \end{figure}
+\end{solution}
+
+\begin{exercise}
+    Show that the graph, $g(x) = (x, p(x))$ of the BB polynomial $p$ in (1.6) is a Bézier curve in $\mathbb{R}^2$, with control points $(\xi_i, c_i)$, $i = 0, 1, \ldots, d$, where $\xi_i = i/d$.
+    \textit{Hint:} Express $x$ as a linear combination of $B_0^d(x), \ldots, B_d^d(x)$.
+\end{exercise}
+
+\begin{solution}
+    We can again utilize Lemma~1.2 to express $x$ as a linear combination of the Bernstein polynomials.
+    We have that, writing $x = x^1$ for clarity,
+    \begin{equation*}
+        x^1 = \frac{(d - 1)!}{d!} \sum_{i = 1}^d \frac{i!}{(i - 1)!} B_i^d(x) = \sum_{i = 1}^d \frac{i}{d} B_i^d(x) = \sum_{i = 0}^d \frac{i}{d} B_i^d(x) = \sum_{i = 0}^d \xi_i B_i^d(x).
+    \end{equation*}
+    We can now express the graph of $p$ as a Bézier curve in $\mathbb{R}^2$ by
+    \begin{equation*}
+        g(x)
+        = (x, p(x))
+        = \left(
+            \sum_{i = 0}^d \xi_i B_i^d(x), \sum_{i = 0}^d c_i B_i^d(x)
+        \right)
+        = \sum_{i = 0}^d (\xi_i, c_i) B_i^d(x)
+        = \sum_{i = 0}^d \boldsymbol{c}_i B_i^d(x),
+    \end{equation*}
+    where $\boldsymbol{c}_i = (\xi_i, c_i)$ are the control points of the Bézier curve.
 \end{solution}
