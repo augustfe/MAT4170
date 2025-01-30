@@ -214,3 +214,114 @@
     \end{align*}
     as we wanted to show.
 \end{solution}
+
+\begin{exercise}
+    Show that the Bernstein basis polynomial $B_i^d(x)$ has only one maximum in $[0, 1]$, namely at $x = i/d$.
+\end{exercise}
+
+\begin{solution}
+    We do this by firstly computing the derivative of $B_i^d(x)$, which is given by
+    \begin{equation*}
+        \left(B_i^d\right)'(x) = d \left( B_{i-1}^{d-1}(x) - B_i^{d-1}(x) \right).
+    \end{equation*}
+    A maximum or minimum of a function occurs where the derivative is zero, so we set
+    \begin{align*}
+        B_{i-1}^{d-1}(x) &= B_i^{d-1}(x) \\
+        \frac{(d-1)!}{(i-1)!(d-i)!} x^{i-1} (1 - x)^{d-i} &= \frac{(d-1)!}{i!(d-1-i)!} x^i (1 - x)^{d-i-1} \\
+        \frac{
+            \cancel{(d-1)!} i! (d-1-i)!
+        }{(i-1)! (d-i)! \cancel{(d-1)!}} \cancel{x^{i-1}} (1 - x)^{\cancel{d-i}} &= x^{\cancel{i}} \cancel{(1 - x)^{d-i-1}} \\
+        \frac{i}{d-i} (1 - x) &= x \\
+        i - ix &= dx - ix \\
+        x &= \frac{i}{d}.
+    \end{align*}
+    We have thus shown that the Bernstein basis polynomials only have one extremal point.
+
+    We can use the second derivative to test if this is a maximum or a minimum, however we can instead note that $B_i^d(x)$ is a non-negative polynomial, which is only zero at either $x = 0$ or $x = 1$, and thus $x = i / d$ must be a maximum.
+\end{solution}
+
+\begin{exercise}
+    Give a proof of the forward difference formula,~(1.15).
+\end{exercise}
+
+\begin{solution}
+    The forward difference formula~(1.15) is given by
+    \begin{equation*}
+        \Delta^r c_0 = \sum_{i = 0}^r \binom{r}{i} (-1)^{r-i} c_i.
+    \end{equation*}
+    The forward difference operator is defined by the recursion
+    \begin{equation*}
+        \Delta^r c_i = \Delta^{r-1} c_{i+1} - \Delta^{r-1} c_i,
+    \end{equation*}
+    where $\Delta^0 c_i = c_i$.
+
+    We prove this by induction on $r$.
+    For the base case $r = 1$, we have that
+    \begin{equation*}
+        \Delta c_0 = c_1 - c_0 = \binom{1}{0} (-1)^{1-0} c_0 + \binom{1}{1} (-1)^{1-1} c_1.
+    \end{equation*}
+    For the induction step, we assume that the formula holds for $r = k$, and show that it holds for $r = k + 1$.
+    We have that
+    \begin{align*}
+        &\Delta^{k+1} c_0 \\
+        &= \Delta^k c_1 - \Delta^k c_0 \\
+        &= \sum_{i = 0}^k \binom{k}{i} (-1)^{k-i} c_{i+1} - \sum_{i = 0}^k \binom{k}{i} (-1)^{k-i} c_i \\
+        &= \sum_{i = 1}^{k+1} \binom{k}{i-1} (-1)^{k-i+1} c_i - \sum_{i = 0}^k \binom{k}{i} (-1)^{k-i} c_i \\
+        &= \binom{k}{k} c_{k+1} + \sum_{i = 1}^k \left(
+            \binom{k}{i-1} (-1)^{k-i+1} - \binom{k}{i} (-1)^{k-i}
+        \right) c_i - \binom{k}{0} (-1)^{k} c_0 \\
+        &= \binom{k+1}{k+1} c_{k+1} + \sum_{i = 1}^k (-1)^{(k+1)-i} \left(
+            \binom{k}{i-1} + \binom{k}{i}
+        \right) c_i + \binom{k+1}{0} (-1)^{k+1} c_0 \\
+        &= \sum_{i = 0}^{k+1} \binom{k+1}{i} (-1)^{k+1-i} c_i,
+    \end{align*}
+    as we wanted to show.
+\end{solution}
+
+\begin{exercise}
+    The Bernstein approximation to a function $f : [0, 1] \to \mathbb{R}$ of order $d$ is the polynomial $g : [0, 1] \to \mathbb{R}$ defined by
+    \begin{equation*}
+        g(x) = \sum_{i = 0}^d f\left(\frac{i}{d}\right) B_i^d(x).
+    \end{equation*}
+    Show that if $f$ is a polynomial of degree $m \leq d$, then $g$ has degree $m$.
+\end{exercise}
+
+\begin{solution}
+    Let $q$ be the polynomial defined by
+    \begin{equation*}
+        q(x) = f(x) - g(x).
+    \end{equation*}
+    We have that $f$ is a polynomial of degree $m \leq d$.
+    As
+    \begin{equation*}
+        q\left(\frac{i}{d}\right) = f\left(\frac{i}{d}\right) - g\left(\frac{i}{d}\right) = 0,
+    \end{equation*}
+    we have that $q$ has $d+1$ roots, and thus $q$ is either a polynomial of degree $d+1$, or $q = 0$.
+    However, as $q$ is the sum of two polynomials of degree $m$ and $d$, respectively, we have that $q$ is a polynomial of degree $\max(m, d)$.
+    As $m \leq d$, we have that $q$ is at most a polynomial of degree $d$, and thus $q = 0$.
+    $q$ being the zero polynomial implies that $g = f$, and thus $g$ has degree $m$.
+\end{solution}
+
+\begin{exercise}
+    Show that the length of the Bézier curve $p$ in~(1.9) is bounded by the length of its control polygon,
+    \begin{equation*}
+        \text{length}(p) \leq \sum_{i = 0}^{d-1} \lVert \Delta \boldsymbol{c}_i \rVert.
+    \end{equation*}
+\end{exercise}
+
+\begin{solution}
+    The length of a curve is given by the integral of the norm of the derivative of the curve, i.e.,
+    \begin{equation*}
+        \text{length}(p) = \int_0^1 \lVert \boldsymbol{p}'(x) \rVert \, dx.
+    \end{equation*}
+    We have that
+    \begin{equation*}
+        \lVert \boldsymbol{p}'(x) \rVert = \lVert d \sum_{i = 0}^{d-1} \Delta \boldsymbol{c}_i B_i^{d-1}(x) \rVert
+        = d \lVert \sum_{i = 0}^{d-1} \Delta \boldsymbol{c}_i B_i^{d-1}(x) \rVert
+        \leq d \sum_{i = 0}^{d-1} \lVert \Delta \boldsymbol{c}_i \rVert,
+    \end{equation*}
+    and thus
+    \begin{equation*}
+        \text{length}(p) = \int_0^1 \lVert \boldsymbol{p}'(x) \rVert \, dx \leq \int_0^1 d \sum_{i = 0}^{d-1} \lVert \Delta \boldsymbol{c}_i \rVert \, dx = \sum_{i = 0}^{d-1} \lVert \Delta \boldsymbol{c}_i \rVert.
+    \end{equation*}
+\end{solution}
