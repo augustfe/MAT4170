@@ -1,0 +1,21 @@
+\begin{exercise}
+    It is sometimes necessary to convert a polynomial in BB form to monomial form.
+    Consider a quadratic BB polynomial,
+    \begin{equation*}
+        p(x) = c_0 (1 - x)^2 + 2c_1 x(1 - x) + c_2 x^2.
+    \end{equation*}
+    Express $p$ in the monomial form
+    \begin{equation*}
+        p(x) = a_0 + a_1 x + a_2 x^2.
+    \end{equation*}
+\end{exercise}
+
+\begin{solution}
+    Rather than using the explicit formula for conversion, we can just expand the coefficients and collect terms.
+    \begin{align*}
+        p(x) &= c_0 (1 - x)^2 + 2c_1 x(1 - x) + c_2 x^2 \\
+        &= c_0 (1 - 2x + x^2) + 2c_1 (x - x^2) + c_2 x^2 \\
+        &= c_0 - 2c_0 x + c_0 x^2 + 2c_1 x - 2c_1 x^2 + c_2 x^2 \\
+        &= c_0 + (-2c_0 + 2c_1) x + (c_0 - 2c_1 + c_2) x^2.
+    \end{align*}
+\end{solution}
