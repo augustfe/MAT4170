@@ -47,12 +47,12 @@
     which is the desired result.
 \end{solution}
 
-\begin{exercise}
+\begin{exercise}\label{ex:bezier_spline}
     Implement the de Casteljau algorithm for a planar Bézier curve of arbitrary degree $d$ over a general interval $[a, b]$.
     Use the routine to make a program to plot the quadratic spline curve $\mathbf{s} : [0, 2] \to \mathbb{R}$, with pieces
     \begin{align*}
         \mathbf{p}(t) &= \sum_{i=0}^{2} \mathbf{c}_i B_{i}^2(t), & 0 \leq t \leq 1, \\
-        \mathbf{q}(t) &= \sum_{i=0}^{2} \mathbf{d}_i B_{i}^2(t), & 1 < t \leq 2,
+        \mathbf{q}(t) &= \sum_{i=0}^{2} \mathbf{d}_i B_{i}^2(t - 1), & 1 < t \leq 2,
     \end{align*}
     where $\mathbf{c}_0 = (-1, 1)$, $\mathbf{c}_1 = (-1, 0)$, $\mathbf{c}_2 = (0, 0)$, and $\mathbf{d}_0 = (0, 0)$, $\mathbf{d}_1 = (1, 0)$, $\mathbf{d}_2 = (2, 1)$.
 \end{exercise}
@@ -65,4 +65,28 @@
         \includegraphics[width=0.7\textwidth]{2_splines_in_bb/bezier_casteljau.pdf}
         \caption{The quadratic spline curve $\mathbf{s} : [0, 2] \to \mathbb{R}$, with pieces $\mathbf{p}(t)$ and $\mathbf{q}(t)$.\label{fig:bezier_spline}}
     \end{figure}
+\end{solution}
+
+\begin{exercise}
+    What is the order of continuity of $\mathbf{s}$ in Exercise~\ref{ex:bezier_spline} at the breakpoint $t = 1$?
+\end{exercise}
+
+\begin{solution}
+    We clearly have $C^0$ continuity at the breakpoint $t = 1$, as
+    \begin{equation*}
+        \mathbf{c}_2 = (0, 0) = \mathbf{d}_0.
+    \end{equation*}
+    For $C^1$ continuity, we must have
+    \begin{align*}
+        \frac{\mathbf{c}_2 - \mathbf{c}_1}{1 - 0} &= \frac{\mathbf{d}_1 - \mathbf{d}_0}{2 - 1} \\
+        (0, 0) - (-1, 0) &= (1, 0) - (0, 0),
+    \end{align*}
+    which also holds.
+    Finally for $C^2$ continuity, we must have
+    \begin{align*}
+        \frac{\mathbf{c}_2 - 2 \mathbf{c}_1 + \mathbf{c}_0}{1^2} &\stackrel{?}{=} \frac{\mathbf{d}_2 - 2 \mathbf{d}_1 + \mathbf{d}_0}{1^2} \\
+        (0, 0) - 2(-1, 0) + (-1, 1) = (1, 1) &\neq (0, 1) = (2, 1) - 2(1, 0) + (0, 0),
+    \end{align*}
+    which it seems like we do not have.
+    Thus, the order of continuity of $\mathbf{s}$ at the breakpoint $t = 1$ is $C^1$.
 \end{solution}
