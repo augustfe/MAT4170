@@ -152,3 +152,64 @@
     As we see, the curvatures are equal at the breakpoint $t = 1$.
     I'm not sure what this means\dots
 \end{solution}
+
+\begin{exercise}
+    Show that the minimization property of Theorem~2.9 also holds for the natural spline of Section~2.7.
+\end{exercise}
+
+\begin{solution}
+    The natural spline of Section~2.7 is defined as the spline $g$ defined for $x_1 < x_2 < \cdots < x_m$ by the piecewise cubic polynomials $g_i$ such that $g(x) = g_i(x)$ for $x \in [x_i, x_{i+1}]$.
+    In addition, we have the conditions
+    \begin{align*}
+        g_i(x_i) &= y_i & i &= 1, 2, \ldots, m, \\
+        g_{i-1}''(x_i) &= g_i''(x_i) & i &= 2, \ldots, m-1.
+    \end{align*}
+    combined with the natural end conditions
+    \begin{equation*}
+        g_{1}''(x_1) = 0
+        \quad \text{and} \quad
+        g_{m}''(x_m) = 0.
+    \end{equation*}
+
+    To prove the minimization property of Theorem~2.9, let $h$ be any $C^2$ function satisfying the interpolation conditions.
+    Let $e = g - h$.
+    Then $e \in C^2[x_1, x_m]$ and
+    \begin{equation*}
+        e(x_i) = g(x_i) - h(x_i) = 0
+        \quad \text{and} \quad
+        e''(x_1) = e''(x_m) = 0
+    \end{equation*}
+    for $i = 1, 2, \ldots, m$.
+    Continuing as in the proof of Theorem~2.9, we have $h = g + e$ so
+    \begin{align*}
+        \int (h'')^2
+        &= \int (g'' + e'')^2 \\
+        &= \int (g'')^2 + 2 \int g'' e'' + \int (e'')^2 \\
+        &\geq \int (g'')^2 + 2 \int g'' e''.
+    \end{align*}
+    Let $\phi = g''$, which then is piecewise linear.
+    We then rewrite the equation as
+    \begin{equation*}
+        \int (h'')^2 - \int (g'')^2 \geq 2 \int \phi e'',
+    \end{equation*}
+    where the goal is now to show that the right-hand side is nonnegative.
+
+    We have
+    \begin{equation*}
+        \int \phi e''
+        = \sum_{i=1}^{m-1} \int_{x_i}^{x_{i+1}} \phi e''
+        = \sum_{i=1}^{m-1} \left[ \phi e' \right]_{x_i}^{x_{i+1}} - \sum_{i=1}^{m-1} \int_{x_i}^{x_{i+1}} \phi' e'
+    \end{equation*}
+    where we have used integration by parts.
+    By the natural end conditions, the first term vanishes, as
+    \begin{equation*}
+        \sum_{i = 1}^{m - 1} \left[ \phi e' \right]_{x_i}^{x_{i+1}} = \phi(x_m) e'(x_m) - \phi(x_1) e'(x_1) = 0.
+    \end{equation*}
+    The second term also vanishes, because as $\phi$ is piecewise linear, $\phi'$ is piecewise constant.
+    This allows us to write
+    \begin{equation*}
+        \int_{x_i}^{x_{i+1}} \phi' e' = \phi'\Big|_{[x_i, x_{i+1}]} \int_{x_i}^{x_{i+1}} e' = \phi'\Big|_{[x_i, x_{i+1}]} \Big( e(x_{i+1}) - e(x_i) \Big) = 0,
+    \end{equation*}
+    which vanishes as $e(x_i) = 0$ for all $i$.
+    Thus, we have shown that the right-hand side is nonnegative, and the minimization property of Theorem~2.9 also holds for the natural spline of Section~2.7.
+\end{solution}
