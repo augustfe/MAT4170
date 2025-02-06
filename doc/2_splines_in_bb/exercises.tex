@@ -46,3 +46,23 @@
     \end{align*}
     which is the desired result.
 \end{solution}
+
+\begin{exercise}
+    Implement the de Casteljau algorithm for a planar Bézier curve of arbitrary degree $d$ over a general interval $[a, b]$.
+    Use the routine to make a program to plot the quadratic spline curve $\mathbf{s} : [0, 2] \to \mathbb{R}$, with pieces
+    \begin{align*}
+        \mathbf{p}(t) &= \sum_{i=0}^{2} \mathbf{c}_i B_{i}^2(t), & 0 \leq t \leq 1, \\
+        \mathbf{q}(t) &= \sum_{i=0}^{2} \mathbf{d}_i B_{i}^2(t), & 1 < t \leq 2,
+    \end{align*}
+    where $\mathbf{c}_0 = (-1, 1)$, $\mathbf{c}_1 = (-1, 0)$, $\mathbf{c}_2 = (0, 0)$, and $\mathbf{d}_0 = (0, 0)$, $\mathbf{d}_1 = (1, 0)$, $\mathbf{d}_2 = (2, 1)$.
+\end{exercise}
+
+\begin{solution}
+    The de Casteljau algorithm is implemented in \verb|spline_cj.py|, and is practically identical to the one implemented in the previous section, due to the vectorization possibilities in \verb|JAX|.
+    The resulting figure is shown in Figure~\ref{fig:bezier_spline}.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.7\textwidth]{2_splines_in_bb/bezier_casteljau.pdf}
+        \caption{The quadratic spline curve $\mathbf{s} : [0, 2] \to \mathbb{R}$, with pieces $\mathbf{p}(t)$ and $\mathbf{q}(t)$.\label{fig:bezier_spline}}
+    \end{figure}
+\end{solution}
