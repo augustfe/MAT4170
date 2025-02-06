@@ -90,3 +90,65 @@
     which it seems like we do not have.
     Thus, the order of continuity of $\mathbf{s}$ at the breakpoint $t = 1$ is $C^1$.
 \end{solution}
+
+\begin{exercise}
+    The curvature of a parametric curve $\mathbf{r}(t)$ in $\mathbb{R}^2$ can be expressed as
+    \begin{equation*}
+        \kappa(t) = \frac{\mathbf{r}'(t) \times \mathbf{r}''(t)}{\norm{\mathbf{r}'(t)}^3},
+    \end{equation*}
+    where $(a_1, a_2) \times (b_1, b_2) := a_1 b_2 - a_2 b_1$.
+    What are the curvatures of $\mathbf{p}$ and $\mathbf{q}$ in Exercise~\ref{ex:bezier_spline} at the breakpoint $t = 1$?
+    What can you say about the smoothness of $\mathbf{s}$?
+\end{exercise}
+
+\begin{solution}
+    We firstly begin by tabulating the derivatives of $\mathbf{p}$ and $\mathbf{q}$, based on the general formula
+    \begin{equation*}
+        p^{(r)}(x) = \frac{d!}{(d - r)!} \frac{1}{h^r} \sum_{i=0}^{d-r} \Delta^r c_{i} B_i^{d-r}(\lambda).
+    \end{equation*}
+    In both cases here, we have $h = 1$, $d = 2$, and $\lambda = t$ for $\mathbf{p}$ and $\lambda = t - 1$ for $\mathbf{q}$.
+    The derivatives for $\mathbf{p}$ are then
+    \begin{align*}
+        \mathbf{p}'(t) &= 2 \left(\left( \mathbf{c}_1 - \mathbf{c}_0 \right) B_0^1(\lambda) + \left( \mathbf{c}_2 - \mathbf{c}_1 \right) B_1^1(\lambda)\right) &
+        \mathbf{p}''(t) &= 2 \left( \mathbf{c}_2 - 2 \mathbf{c}_1 + \mathbf{c}_0 \right) B_0^0(\lambda) \\
+        &= 2 \left(\left( \mathbf{c}_1 - \mathbf{c}_0 \right) (1 - t) + \left( \mathbf{c}_2 - \mathbf{c}_1 \right) t\right) &
+        &= 2 \left(1, 1\right) \\
+        &= 2 \left(
+            (\mathbf{c}_2 - 2 \mathbf{c}_1 + \mathbf{c}_0)t + (\mathbf{c}_1 - \mathbf{c}_0)
+        \right) &
+        &= (2, 2), \\
+        &= 2 \left(
+            (1, 1)t + (0, -1)
+        \right) \\
+        &= (2t, 2t - 2),
+    \end{align*}
+    while we for $\mathbf{q}$ have
+    \begin{align*}
+        \mathbf{q}'(t) &= 2 \left(\left( \mathbf{d}_1 - \mathbf{d}_0 \right) B_0^1(\lambda) + \left( \mathbf{d}_2 - \mathbf{d}_1 \right) B_1^1(\lambda)\right) &
+        \mathbf{q}''(t) &= 2 \left( \mathbf{d}_2 - 2 \mathbf{d}_1 + \mathbf{d}_0 \right) B_0^0(\lambda) \\
+        &= 2 \left(\left( \mathbf{d}_1 - \mathbf{d}_0 \right) t + \left( \mathbf{d}_2 - \mathbf{d}_1 \right) (1 - t)\right) &
+        &= 2 \left(0, 1\right) \\
+        &= 2 \left(
+            (-\mathbf{d}_2 + 2 \mathbf{d}_1 - \mathbf{d}_0)t + (\mathbf{d}_2 - \mathbf{d}_1)
+        \right) &
+        &= (0, 2), \\
+        &= 2 \left(
+            (0, -1)t + (1, 1)
+        \right) \\
+        &= (2, - 2t + 2),
+    \end{align*}
+    where we have used that $B_0^1(1 - t) = t$ and $B_1^1(1 - t) = 1 - t$.
+    The curvatures are then
+    \begin{align*}
+        \kappa_{\mathbf{p}}(t) &= \frac{(2t, 2t - 2) \times (2, 2)}{\sqrt{(2t)^2 + (2t - 2)^2}^3} = \frac{4}{(8t^2 - 8t + 4)^{3/2}}, \\
+        \kappa_{\mathbf{q}}(t) &= \frac{(2, -2t + 2) \times (0, 2)}{\sqrt{2^2 + (-2t + 2)^2}^3} = \frac{4}{(4t^2 - 8t + 8)^{3/2}}.
+    \end{align*}
+    These give, at the breakpoint $t = 1$, the curvatures
+    \begin{equation*}
+        \kappa_{\mathbf{p}}(1) = \frac{4}{2^3} = \frac{1}{2}
+        \quad \text{and} \quad
+        \kappa_{\mathbf{q}}(1) = \frac{4}{2^3} = \frac{1}{2}.
+    \end{equation*}
+    As we see, the curvatures are equal at the breakpoint $t = 1$.
+    I'm not sure what this means\dots
+\end{solution}
