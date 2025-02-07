@@ -307,23 +307,29 @@
 \begin{exercise}
     Show that the length of the Bézier curve $p$ in~(1.9) is bounded by the length of its control polygon,
     \begin{equation*}
-        \text{length}(p) \leq \sum_{i = 0}^{d-1} \lVert \Delta \boldsymbol{c}_i \rVert.
+        \text{length}(p) \leq \sum_{i = 0}^{d-1} \norm{\Delta \boldsymbol{c}_i}.
     \end{equation*}
 \end{exercise}
 
 \begin{solution}
     The length of a curve is given by the integral of the norm of the derivative of the curve, i.e.,
     \begin{equation*}
-        \text{length}(p) = \int_0^1 \lVert \boldsymbol{p}'(x) \rVert \, dx.
+        \text{length}(p) = \int_0^1 \norm{ \boldsymbol{p}'(x)} \, dx.
     \end{equation*}
     We have that
     \begin{equation*}
-        \lVert \boldsymbol{p}'(x) \rVert = \lVert d \sum_{i = 0}^{d-1} \Delta \boldsymbol{c}_i B_i^{d-1}(x) \rVert
-        = d \lVert \sum_{i = 0}^{d-1} \Delta \boldsymbol{c}_i B_i^{d-1}(x) \rVert
-        \leq d \sum_{i = 0}^{d-1} \lVert \Delta \boldsymbol{c}_i \rVert,
+        \norm{\boldsymbol{p}'(x)} = \norm{d \sum_{i = 0}^{d-1} \Delta \boldsymbol{c}_i B_i^{d-1}(x)}
+        = d \norm{\sum_{i = 0}^{d-1} \Delta \boldsymbol{c}_i B_i^{d-1}(x)}
+        \leq d \sum_{i = 0}^{d-1} \norm{\Delta \boldsymbol{c}_i} B_i^{d-1}(x),
     \end{equation*}
-    and thus
-    \begin{equation*}
-        \text{length}(p) = \int_0^1 \lVert \boldsymbol{p}'(x) \rVert \, dx \leq \int_0^1 d \sum_{i = 0}^{d-1} \lVert \Delta \boldsymbol{c}_i \rVert \, dx = \sum_{i = 0}^{d-1} \lVert \Delta \boldsymbol{c}_i \rVert.
-    \end{equation*}
+    where we in the last inequality use the fact that $B_{i}^{d-1}(x)$ is a non-negative scalar for $x \in [0, 1]$.
+    We then have
+    \begin{align*}
+        \text{length}(p)
+        &= \int_0^1 \norm{\boldsymbol{p}'(x)}  \, dx \\
+        &\leq \int_0^1 d \sum_{i = 0}^{d-1} \norm{\Delta \boldsymbol{c}_i} B_{i}^{d-1} (x) \, dx \\
+        &= \sum_{i = 0}^{d-1} \norm{\Delta \boldsymbol{c}_i} \int_0^1 d B_{i}^{d-1} (x) \, dx \\
+        &= \sum_{i = 0}^{d-1} \norm{\Delta \boldsymbol{c}_i},
+    \end{align*}
+    using the property $\int_0^1 B_i^{d-1}(x) \, dx = 1 / d$ in the last step, as we wanted to show.
 \end{solution}
