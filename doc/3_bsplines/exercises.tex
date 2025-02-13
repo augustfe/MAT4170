@@ -112,6 +112,7 @@
     Now consider the polynomial $pq$.
 \end{exercise}
 
+\begin{comment}
 \begin{solution}
     Considering the hint, it seems important to consider the definition of divided differences based on the leading coefficient of the interpolating polynomial.
     Let $p$ and $q$ be the polynomials of degree $\leq k$ that interpolate $f$ and $g$ respectively at $x_0, x_1, \ldots, x_k$, and lets assume for now that $x_i \neq x_j$ for $i \neq j$.
@@ -184,4 +185,167 @@
     \end{equation*}
     We already know that $q(x_0) = g_0$, however actually calculating everything seems tricky, likely involving some telescoping sum from the recursive formula.
 
+    Multiplying $p$ and $q$ at $x_\ell$ gives
+    \begin{equation*}
+        p(x_\ell) \cdot q(x_\ell) = \sum_{i = 0}^\ell \sum_{j = \ell}^k [x_0, \ldots, x_i]f [x_j, \ldots, x_k]g \prod_{a = 0}^{i - 1} (x_\ell - x_a) \prod_{b = j + 1}^{k} (x_\ell - x_b).
+    \end{equation*}
+    This seems pretty close if you ask me, if you compare with $r(x_\ell)$, however I'm unsure as to how to compute the summations and products.
+    The leading power of $x_\ell$ is found $i = \ell = j$, which includes the term
+    \begin{equation*}
+        \prod_{a=0}^{\ell-1} (x_\ell - x_a) \prod_{b = \ell + 1}^{k} (x_\ell - x_b) = \prod_{\substack{a = 0 \\ a \neq \ell}}^{k} (x_\ell - x_a),
+    \end{equation*}
+    with the coefficient
+    \begin{equation*}
+        [x_0, \ldots, x_\ell]f [x_\ell, \ldots, x_k]g.
+    \end{equation*}
+    Interestingly then, the coefficient of the leading power of $x_\ell$ in $r(x_\ell)$ is the same as the coefficient of the leading power of $x_\ell$ in $p(x_\ell) \cdot q(x_\ell)$.
+
+    \vskip 3em % chktex 41
+
+    Lets consider again the polynomial $pq$, taking it from the top.
+    We have
+    \begin{align*}
+        p(x) &= \sum_{i = 0}^k (x - x_0) \cdots (x - x_{i-1})[x_0, \ldots, x_i]f, \\
+        q(x) &= \sum_{j = 0}^k (x - x_{j+1}) \cdots (x - x_k)[x_j, \ldots, x_k]g,
+    \end{align*}
+    and we wish to show that
+    \begin{equation*}
+        [x_0, \ldots, x_k](fg) = \sum_{i=0}^{k} [x_0, \ldots, x_i]f [x_i, \ldots, x_k]g.
+    \end{equation*}
+    We also define the polynomial $r$ as
+    \begin{equation*}
+        r(x) = \sum_{m = 0}^k (x - x_0) \cdots (x - x_{m-1}) [x_0, \ldots, x_m](fg).
+    \end{equation*}
+    which interpolates $fg$ at $x_0, x_1, \ldots, x_k$.
+    With $k = 0$ we have
+    \begin{equation*}
+        p(x) = [x_0]f
+        \quad \text{and} \quad
+        q(x) = [x_0]g,
+    \end{equation*}
+    showing that
+    \begin{equation*}
+        [x_0](fg) = f_0 g_0 = [x_0]f [x_0]g.
+    \end{equation*}
+
+    For $k = 1$ we have
+    \begin{align*}
+        p(x) &= [x_0]f + (x - x_0)[x_0, x_1]f \\
+        q(x) &= (x - x_1)[x_0, x_1]g + [x_1]g \\
+        r(x) &= [x_0](fg) + (x - x_0)[x_0, x_1](fg)
+    \end{align*}
+    where we at $x_0$ have
+    \begin{equation*}
+        r(x_0) = [x_0](fg)
+    \end{equation*}
+    and
+    \begin{equation*}
+        p(x_0) \cdot q(x_0) = [x_0]f((x_0 - x_1)[x_0, x_1]g + [x_1]g)
+    \end{equation*}
+    using
+    \begin{equation*}
+        [x_0, x_1]g = \frac{[x_1]g - [x_0]g}{x_1 - x_0}
+    \end{equation*}
+    we find
+    \begin{align*}
+        p(x_0) \cdot q(x_0)
+        &= [x_0]f((x_0 - x_1)[x_0, x_1]g + [x_1]g) \\
+        &= [x_0]f \left( (x_0 - x_1) \frac{[x_1]g - [x_0]g}{x_1 - x_0} + [x_1]g \right) \\
+        &= [x_0]f [x_0]g
+    \end{align*}
+    and similarly
+    \begin{equation*}
+        p(x_1) \cdot q(x_1) = [x_1]f [x_1]g.
+    \end{equation*}
+    For $r(x_1)$ we have
+    \begin{align*}
+        r(x_1)
+        &= [x_0](fg) + (x_1 - x_0)[x_0, x_1](fg) \\
+        &= [x_0](fg) + (x_1 - x_0) \frac{[x_1](fg) - [x_0](fg)}{x_1 - x_0} \\
+        &= [x_1](fg),
+    \end{align*}
+
+    IDEA: Consider the polynomial $pq$.
+    Multiply everything out, and remove the terms which include factors $(x - x_i)$ for $i = 0, \ldots, k$.
+    Removing these still gives us an interpolating polynomials, however it has a lower degree!!!!
+\end{solution}
+\end{comment}
+
+\begin{solution}
+    As the hint suggests, we consider the polynomials $p$ and $q$ of degree $\leq k$ that interpolate $f$ and $g$ respectively at $x_0, x_1, \ldots, x_k$, expressed as
+    \begin{align*}
+        p(x) &= \sum_{i=0}^{k} (x - x_0) \cdots (x - x_{i-1})[x_0, \ldots, x_i]f, \\
+        q(x) &= \sum_{j=0}^{k} (x - x_{j+1}) \cdots (x - x_k)[x_j, \ldots, x_k]g.
+    \end{align*}
+    In addition, let $r$ be the polynomial of degree $\leq k$ that interpolates $fg$ at $x_0, x_1, \ldots, x_k$, expressed as
+    \begin{equation*}
+        r(x) = \sum_{m=0}^{k} (x - x_0) \cdots (x - x_{m-1})[x_0, \ldots, x_m](fg).
+    \end{equation*}
+
+    We now consider the polynomial $pq$.
+    In order to illustrate the idea, let $k = 1$ for now.
+    We have
+    \begin{align*}
+        p(x) &= [x_0]f + (x - x_0)[x_0, x_1]f, \\
+        q(x) &= (x - x_1)[x_0, x_1]g + [x_1]g.
+    \end{align*}
+    The polynomial $pq$ is then
+    \begin{multline*}
+        pq(x)
+        = [x_0]f [x_1]g
+        + (x - x_0)[x_0, x_1]f [x_1]g
+        + (x - x_1)[x_0]f [x_0, x_1]g \\
+        + (x - x_0)(x - x_1)[x_0, x_1]f [x_0, x_1]g.
+    \end{multline*}
+    We can see that the polynomial $pq$ is of degree $\leq 2$ and interpolates $fg$ at $x_0$ and $x_1$.
+    However, note that the rightmost term is zero at both the interpolation points, so removing it still gives us an interpolating polynomial, now of degree $\leq 1$.
+    It is therefore the unique interpolating polynomial, of the form
+    \begin{equation*}
+        \overline{pq}(x)
+        = [x_0]f [x_1]g
+        + (x - x_0)[x_0, x_1]f [x_1]g
+        + (x - x_1)[x_0]f [x_0, x_1]g.
+    \end{equation*}
+    The leading coefficient of $\overline{pq}$ is then
+    \begin{equation*}
+        \text{l.c.}(\overline{pq}) = [x_0, x_1]f [x_1]g + [x_0]f [x_0, x_1]g.
+    \end{equation*}
+
+    Now, we consider the polynomial $r$.
+    We have
+    \begin{equation*}
+        r(x) = [x_0](fg) + (x - x_0)[x_0, x_1](fg),
+    \end{equation*}
+    which interpolates $fg$ at $x_0, x_1$.
+    Due to the uniqueness of the interpolating polynomial, we must have $r = \overline{pq}$.
+    As we can easily see, the leading coefficient of $r$ is
+    \begin{equation*}
+        \text{l.c.}(r) = [x_0, x_1](fg).
+    \end{equation*}
+    As the polynomials are the same, the leading coefficients must be the same, so we have
+    \begin{equation*}
+        [x_0, x_1](fg) = [x_0, x_1]f [x_1]g + [x_0]f [x_0, x_1]g,
+    \end{equation*}
+    proving the case when $k = 1$.
+
+    We now consider the general case.
+    The polynomial $pq$ is now of the form
+    \begin{equation*}
+        pq(x) = \sum_{i=0}^{k} \sum_{j=0}^{k} [x_0, \ldots, x_i]f [x_j, \ldots, x_k]g \prod_{a=0}^{i-1} (x - x_a) \prod_{b=j+1}^{k} (x - x_b).
+    \end{equation*}
+    When $j \leq i - 1$, the products on the right side will be zero at $x_0, x_1, \ldots, x_k$, so we can safely remove these terms while still having an interpolating polynomial.
+    This gives us $\overline{pq}$, of the form
+    \begin{align*}
+        \overline{pq}(x) = \sum_{i=0}^{k} \sum_{j=i}^{k} [x_0, \ldots, x_i]f [x_j, \ldots, x_k]g \prod_{a=0}^{i-1} (x - x_a) \prod_{b=j+1}^{k} (x - x_b),
+    \end{align*}
+    which interpolates $fg$ at $x_0, x_1, \ldots, x_k$ and has degree $\leq k$.
+    The leading coefficient of $\overline{pq}$ is found when $i = j$, as it includes the term
+    \begin{equation*}
+        \prod_{a=0}^{i-1} (x - x_a) \prod_{b=i+1}^{k} (x - x_b) = \prod_{\substack{a=0 \\ a \neq i}}^{k} (x - x_a),
+    \end{equation*}
+    with the leading coefficient
+    \begin{equation*}
+        \text{l.c.}(\overline{pq}) = \sum_{i = 0}^{k} [x_0, \ldots, x_i]f [x_i, \ldots, x_k]g.
+    \end{equation*}
+    From $r$ we can again read the leading coefficient simply as $[x_0, \ldots, x_k](fg)$, proving Leibniz' rule.
 \end{solution}
