@@ -1,0 +1,187 @@
+\section{B-splines}
+
+\begin{exercise}
+    Suppose that $x_0, x_1, x_2$ are distinct, and let $f_i = f(x_i)$, $i = 0, 1, 2$, for some function $f$.
+    Show by direct calculation that the recursive formula
+    \begin{equation*}
+        [x_0, x_1, x_2]f =
+        \frac{
+            \frac{f_2 - f_1}{x_2 - x_1}
+            - \frac{f_1 - f_0}{x_1 - x_0}
+        }{x_2 - x_0}
+    \end{equation*}
+    can be expressed as
+    \begin{equation*}
+        [x_0, x_1, x_2]f = \sum_{i=0}^{2} \frac{f_i}{\prod_{j \neq i} (x_i - x_j)}.
+    \end{equation*}
+\end{exercise}
+
+\begin{solution}
+    We have
+    \begin{align*}
+        [x_0, x_1, x_2]f
+        &= \frac{
+            \frac{f_2 - f_1}{x_2 - x_1}
+            - \frac{f_1 - f_0}{x_1 - x_0}
+        }{x_2 - x_0}
+    \end{align*}
+    where we begin by expanding the top fractions.
+    \begin{align}
+        \frac{f_2 - f_1}{x_2 - x_1} - \frac{f_1 - f_0}{x_1 - x_0}
+        &= \frac{f_2}{x_2 - x_1} - f_1 \left( \frac{1}{x_2 - x_1} + \frac{1}{x_1 - x_0} \right) + \frac{f_0}{x_1 - x_0} \nonumber \\
+        &= \frac{f_2}{x_2 - x_1} - f_1 \frac{x_1 - x_0 + x_2 - x_1}{(x_2 - x_1)(x_1 - x_0)} + \frac{f_0}{x_1 - x_0} \nonumber \\
+        &= \frac{f_2}{x_2 - x_1} - f_1 \frac{x_2 - x_0}{(x_2 - x_1)(x_1 - x_0)} + \frac{f_0}{x_1 - x_0} \nonumber \\
+        &= \frac{f_2}{x_2 - x_1} + \frac{f_1(x_2 - x_0)}{(x_1 - x_2)(x_1 - x_0)} + \frac{f_0}{x_1 - x_0} \label{eq:top_fraction}
+    \end{align}
+    Dividing~\eqref{eq:top_fraction} by $x_2 - x_0$ gives
+    \begin{align*}
+        [x_0, x_1, x_2]f
+        &= \frac{
+            \frac{f_2 - f_1}{x_2 - x_1}
+            - \frac{f_1 - f_0}{x_1 - x_0}
+        }{x_2 - x_0} \\
+        &= \frac{f_2}{(x_2 - x_1)(x_2 - x_0)}
+        + \frac{f_1}{(x_1 - x_2)(x_1 - x_0)}
+        + \frac{f_0}{(x_1 - x_0)(x_2 - x_0)} \\
+        &= \frac{f_2}{(x_2 - x_1)(x_2 - x_0)}
+        + \frac{f_1}{(x_1 - x_2)(x_1 - x_0)}
+        + \frac{f_0}{(x_0 - x_1)(x_0 - x_2)} \\
+        &= \sum_{i=0}^{2} \frac{f_i}{\prod_{j \neq i} (x_i - x_j)},
+    \end{align*}
+    as desired.
+\end{solution}
+
+\begin{exercise}
+    Show that if $f(x) = 1/x$ and that $x_0, x_1, \ldots, x_k \neq 0$ then
+    \begin{equation*}
+        [x_0, \ldots, x_k]f = (-1)^k \frac{1}{x_0 x_1 \cdots x_k}.
+    \end{equation*}
+\end{exercise}
+
+\begin{solution}
+    In the base case we have simply
+    \begin{equation*}
+        [x_0]f = \frac{1}{x_0} = (-1)^0 \frac{1}{x_0}.
+    \end{equation*}
+    In the case of $x_0 = x_1 = \cdots = x_k$ we have
+    \begin{equation*}
+        [\underbrace{x_0, x_0, \ldots, x_0}_{k+1}]f = \frac{f^{(k)}(x_0)}{k!} = (-1)^k \frac{1}{x_0^{k+1}} \frac{k!}{k!} = (-1)^k \frac{1}{x_0 x_1 \cdots x_k},
+    \end{equation*}
+    so mulitplicities are handled correctly.
+    For two distinct points $x_0, x_1$ we have
+    \begin{equation*}
+        [x_0, x_1]f = \frac{f_1 - f_0}{x_1 - x_0} = \frac{1/x_1 - 1/x_0}{x_1 - x_0} = \frac{x_0 - x_1}{x_0 x_1 (x_1 - x_0)} = (-1)^1 \frac{1}{x_0 x_1},
+    \end{equation*}
+    so the formula holds for $k = 1$.
+    Assume that the formula holds for $k = n$, and consider $k = n + 1$.
+    We have
+    \begin{align*}
+        [x_0, \ldots, x_{n+1}]f
+        &= \frac{[x_1, \ldots, x_{n+1}]f - [x_0, \ldots, x_{n}]f}{x_{n+1} - x_0} \\
+        &= \frac{(-1)^n \frac{1}{x_1 \cdots x_{n+1}} - (-1)^n \frac{1}{x_0 \cdots x_n}}{x_{n+1} - x_0} \\
+        &= \frac{
+            (-1)^n \frac{1}{x_{n+1}} - (-1)^n \frac{1}{x_0}
+        }{
+            (x_{n+1} - x_0) x_1 \cdots x_n
+        } \\
+        &= \frac{
+            (-1)^n \frac{x_0 - x_{n+1}}{x_0 x_{n+1}}
+        }{
+            (x_{n+1} - x_0) x_1 \cdots x_n
+        } \\
+        &= (-1)^{n+1}\frac{
+            x_{n+1} - x_0
+        }{
+            (x_{n+1} - x_0) x_0 x_1 \cdots x_n x_{n+1}
+        } \\
+        &= (-1)^{n+1}\frac{1}{x_0 x_1 \cdots x_{n+1}},
+    \end{align*}
+    proving the formula by induction.
+\end{solution}
+
+\begin{exercise}
+    Prove the Leibniz rule for divided differences:
+    \begin{equation*}
+        [x_0, x_1, \ldots, x_k](fg) = \sum_{i=0}^{k} [x_0, \ldots, x_i]f [x_i, \ldots, x_k]g.
+    \end{equation*}
+    Hint: let $p$ and $q$ be the polynomials of degree $\leq k$ that interpolate $f$ and $g$ respectively at $x_0, x_1, \ldots, x_k$, and express $p$ and $q$ as
+    \begin{align*}
+        p(x) &= \sum_{i=0}^{k} (x - x_0) \cdots (x - x_{i-1})[x_0, \ldots, x_i]f, \\
+        q(x) &= \sum_{j=0}^{k} (x - x_{j+1}) \cdots (x - x_k)[x_j, \ldots, x_k]g.
+    \end{align*}
+    Now consider the polynomial $pq$.
+\end{exercise}
+
+\begin{solution}
+    Considering the hint, it seems important to consider the definition of divided differences based on the leading coefficient of the interpolating polynomial.
+    Let $p$ and $q$ be the polynomials of degree $\leq k$ that interpolate $f$ and $g$ respectively at $x_0, x_1, \ldots, x_k$, and lets assume for now that $x_i \neq x_j$ for $i \neq j$.
+    We write $p$ and $q$ as
+    \begin{align*}
+        p(x) &= \sum_{i=0}^{k} (x - x_0) \cdots (x - x_{i-1})[x_0, \ldots, x_i]f, \\
+        q(x) &= \sum_{j=0}^{k} (x - x_{j+1}) \cdots (x - x_k)[x_j, \ldots, x_k]g,
+    \end{align*}
+    that is, in Newton form, where $q$ is written in reverse order.
+
+    We now consider the polynomial $pq$.
+    For brevity, we write $p$ and $q$ as
+    \begin{equation*}
+        p(x) = \sum_{i = 0}^k \prod_{a = 0}^{i - 1} (x - x_a) [x_0, \ldots, x_i]f,
+        \quad
+        q(x) = \sum_{j = 0}^k \prod_{b = j + 1}^{k} (x - x_b) [x_j, \ldots, x_k]g.
+    \end{equation*}
+    Then,
+    \begin{align*}
+        (p \cdot q)(x)
+        &= \left( \sum_{i = 0}^k \prod_{a = 0}^{i - 1} (x - x_a) [x_0, \ldots, x_i]f \right) \left( \sum_{j = 0}^k \prod_{b = j + 1}^{k} (x - x_b) [x_j, \ldots, x_k]g \right) \\
+        &= \sum_{i = 0}^k \sum_{j = 0}^k \prod_{a = 0}^{i - 1} (x - x_a) [x_0, \ldots, x_i]f \prod_{b = j + 1}^{k} (x - x_b) [x_j, \ldots, x_k]g \\
+        &= \sum_{i = 0}^k \sum_{j = 0}^k [x_0, \ldots, x_i]f [x_j, \ldots, x_k]g \prod_{a = 0}^{i - 1} (x - x_a) \prod_{b = j + 1}^{k} (x - x_b).
+    \end{align*}
+
+    What about the unique polynomial of degree $\leq k$ that interpolates $fg$ at $x_0, x_1, \ldots, x_k$?
+    We know that the polynomial must be of the form
+    \begin{equation*}
+        r(x) = \sum_{m = 0}^k [x_0, \ldots, x_m](fg) \prod_{n = 0}^{m - 1} (x - x_n),
+    \end{equation*}
+    and we know that $r(x)$ must be equal to $(p \cdot q)(x)$ at $x_0, x_1, \ldots, x_k$, as
+    \begin{equation*}
+        r(x_i) = f_i \cdot g_i = p(x_i) \cdot q(x_i) = (p \cdot q)(x_i),
+        \quad i = 0, 1, \ldots, k.
+    \end{equation*}
+
+    Consider now a specific $x_\ell \in \{x_0, \ldots, x_k\}$.
+    We have
+    \begin{align*}
+        r(x_\ell)
+        &= \sum_{m = 0}^k [x_0, \ldots, x_m](fg) \prod_{n = 0}^{m - 1} (x_\ell - x_n) \\
+        &= \sum_{m = 0}^\ell [x_0, \ldots, x_m](fg) \prod_{n = 0}^{m - 1} (x_\ell - x_n) + \sum_{m = \ell + 1}^k [x_0, \ldots, x_m](fg) \prod_{n = 0}^{m - 1} (x_\ell - x_n) \\
+        &= \sum_{m = 0}^\ell [x_0, \ldots, x_m](fg) \prod_{n = 0}^{m - 1} (x_\ell - x_n),
+    \end{align*}
+    where the last equality follows as $\prod_{n = 0}^{m - 1} (x_\ell - x_n) = 0$ for $m > \ell$.
+    Considering $p$ and $q$ seperately, we similarly have
+    \begin{align*}
+        p(x_\ell)
+        &= \sum_{i = 0}^k [x_0, \ldots, x_i]f \prod_{a = 0}^{i - 1} (x_\ell - x_a) , \\
+        &= \sum_{i = 0}^\ell [x_0, \ldots, x_i]f \prod_{a = 0}^{i - 1} (x_\ell - x_a) ,
+    \end{align*}
+    and
+    \begin{align*}
+        q(x_\ell)
+        &= \sum_{j = 0}^k [x_j, \ldots, x_k]g \prod_{b = j + 1}^{k} (x_\ell - x_b) , \\
+        &= \sum_{j = \ell}^k [x_j, \ldots, x_k]g \prod_{b = j + 1}^{k} (x_\ell - x_b) .
+    \end{align*}
+
+    In order to get a better intuition as to how to proceed, let's consider the points $x_0$.
+    We have
+    \begin{equation*}
+        r(x_0) = [x_0](fg) = f_0 g_0
+        \quad \text{and} \quad
+        p(x_0) = [x_0]f = f_0,
+    \end{equation*}
+    while $q$ gives us
+    \begin{equation*}
+        q(x_0) =
+        \sum_{j = 0}^k [x_j, \ldots, x_k]g \prod_{b = j + 1}^{k} (x_0 - x_b).
+    \end{equation*}
+    We already know that $q(x_0) = g_0$, however actually calculating everything seems tricky, likely involving some telescoping sum from the recursive formula.
+
+\end{solution}
