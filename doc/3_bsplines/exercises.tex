@@ -349,3 +349,219 @@
     \end{equation*}
     From $r$ we can again read the leading coefficient simply as $[x_0, \ldots, x_k](fg)$, proving Leibniz' rule.
 \end{solution}
+
+\begin{exercise}
+    Use the recursion formula (Theorem~3.4) to show that
+    \begin{enumerate}[
+    label=\alph*) % chktex 9 % tex-fmt: skip
+            ] % chktex 10
+        \item $B[0, 0, 0, 1](x) = (1 - x)^2 B[0, 1](x)$,
+        \item $B[0, 0, 1, 2](x) = x(2 - 3x/2)B[0, 1](x) + \frac{1}{2}(2 - x)^2B[1, 2](x)$,
+        \item $B[0, 1, 1, 2](x) = x^2B[0, 1](x) + (2 - x)^2B[1, 2](x)$.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    The recursion formula states that for $d \geq 1$,
+    \begin{equation*}
+        B_{i, d}(x)
+        = \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}(x)
+        + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}(x).
+    \end{equation*}
+    I'm not entirely sure which knots the $B$-splines are defined on, however I guess the exercise is to relate these ones to the cardinal $B$-splines.
+
+    \begin{enumerate}[
+    label=\alph*) % chktex 9 % tex-fmt: skip
+            ] % chktex 10
+        \item In this case we have $t_i = t_d$, meaning that the first term in the recursion formula is zero.
+            We then have
+            \begin{align*}
+                B[0, 0, 0, 1](x)
+                = 0 + \frac{1 - x}{1 - 0} B[0, 0, 1](x).
+            \end{align*}
+            Recursing on $B[0, 0, 1](x)$, again the first term is zero, so we have
+            \begin{equation*}
+                (1 - x)B[0, 0, 1](x)
+                = (1-x) \frac{1 - x}{1 - 0} B[0, 1](x)
+                = (1 - x)^2 B[0, 1](x).
+            \end{equation*}
+
+        \item Next, we have
+            \begin{gather*}
+                B[0, 0, 1, 2](x)
+                = \frac{x - 0}{1 - 0} B[0, 0, 1](x)
+                + \frac{2 - x}{2 - 0} B[0, 1, 2](x) \\
+                = x (1 - x) B[0, 1](x)
+                + \frac{2 - x}{2} \left(
+                    x B[0, 1](x)
+                    + (2 - x) B[1, 2](x)
+                \right) \\
+                = x \left( 1 - x + \frac{2 - x}{2} \right) B[0, 1](x)
+                + \frac{1}{2}(2 - x)^2 B[1, 2](x) \\
+                = x \left( 2 - \frac{3}{2}x \right) B[0, 1](x)
+                + \frac{1}{2}(2 - x)^2 B[1, 2](x).
+            \end{gather*}
+
+        \item Finally, for the last expression we have
+            \begin{equation*}
+                B[0, 1, 1, 2](x)
+                = \frac{x - 0}{1 - 0} B[0, 1, 1](x)
+                + \frac{2 - x}{2 - 1} B[1, 1, 2](x).
+            \end{equation*}
+            Considering the two terms separately, we have
+            \begin{equation*}
+                B[0, 1, 1](x)
+                = x B[0, 1](x)
+            \end{equation*}
+            as the second term vanishes, and
+            \begin{equation*}
+                B[1, 1, 2](x)
+                = \frac{2 - x}{2 - 1} B[1, 2](x)
+                = (2 -x)^2 B[1, 2](x),
+            \end{equation*}
+            where the first term vanishes.
+            Combining these, we find
+            \begin{equation*}
+                B[0, 1, 1, 2](x)
+                = x^2 B[0, 1](x) + (2 - x)^2 B[1, 2](x),
+            \end{equation*}
+            as desired.
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}
+    a) Prove Theorem~3.5, and b) use it to show that for distinct knots, % chktex 10 % tex-fmt: skip
+    \begin{equation*}
+        B_{i, 2}(t_{i+1}) = \frac{t_{i+1} - t_i}{t_{i+2} - t_i},
+        \quad
+        B_{i, 2}(t_{i+2}) = \frac{t_{i+3} - t_{i+2}}{t_{i+3} - t_{i+1}}.
+    \end{equation*}
+\end{exercise}
+
+\begin{solution}
+    Theorem~3.5 states that for any $j = i, i + 1, \ldots , i + d + 1$,
+    \begin{equation*}
+        B[t_i, \ldots, t_{i+d+1}](t_j) =
+        B[t_i, \ldots, t_{j-1}, t_{j+1}, \ldots, t_{i+d+1}](t_j),
+    \end{equation*}
+    that is, the spline with the knot $t_j$ removed.
+
+    Let
+    \begin{equation*}
+        f(x) = (\cdot - x)
+        \quad \text{and} \quad
+        g(x) = (\cdot - x)_+^{d-1},
+    \end{equation*}
+    as then
+    \begin{equation*}
+        \begin{split}
+            B_{i,d}(x) &= (t_{i+d+1} - t_i) [t_i, \ldots, t_{i+d+1}](\cdot - x)_+^d \\
+            &= (t_{i+d+1} - t_i) [t_i, \ldots, t_{i+d+1}](fg).
+        \end{split}
+    \end{equation*}
+    Dropping the initial coefficient $(t_{i+d+1} - t_i)$ for now, we have by Leibniz' rule
+    \begin{align*}
+        [t_i, \ldots, t_{i+d+1}](fg)
+        &= [t_j, t_i, \ldots, \hat{t}_j, \ldots, t_{i+d+1}](fg) \\
+        &= [t_j]f [t_j, t_i, \ldots, \hat{t}_j, \ldots, t_{i+d+1}](g) \\
+        &\quad + [t_j, t_i]f [t_i, \ldots, \hat{t}_j, \ldots, t_{i+d+1}](g) \\
+        &\quad + [t_j, t_i, t_{i+1}]f [t_{i+1}, \ldots, \hat{t}_j, \ldots, t_{i+d+1}](g) \\
+        &\quad + \cdots,
+    \end{align*}
+    where the hat denotes the omitted knot.
+    As $f$ is linear, we have
+    \begin{equation*}
+        [\underbrace{t_j, t_i, \ldots, t_k}_{\geq 3}]f = 0
+        \quad \text{and} \quad
+        [t_j, t_i]f = 1.
+    \end{equation*}
+    We then have
+    \begin{equation*}
+        \begin{split}
+            [t_i, \ldots, t_{i+d+1}](fg) &= f(t_j) [t_j, t_i, \ldots, \hat{t}_j, \ldots, t_{i+d+1}](g) \\
+            &\quad + [t_i, \ldots, \hat{t}_j, \ldots, t_{i+d+1}](g) \\
+            &= (t_j - x) [t_j, t_i, \ldots, \hat{t}_j, \ldots, t_{i+d+1}](g) \\
+            &\quad + [t_i, \ldots, \hat{t}_j, \ldots, t_{i+d+1}](g).
+        \end{split}
+    \end{equation*}
+    At $x = t_j$, we thus have, instering back the coefficient,
+    \begin{equation*}
+        B[t_i, \ldots, t_{i+d+1}](t_j) =
+        B[t_i, \ldots, \hat{t}_j, \ldots, t_{i+d+1}](t_j),
+    \end{equation*}
+    as we wanted to show.
+
+    For the second part, we have
+    \begin{align*}
+        B_{i, 2}(t_{i+1}) &= B[t_i, t_{i+1}, t_{i+2}, t_{i+3}](t_{i+1}) = B[t_i, t_{i+2}, t_{i+3}](t_{i+1}) \\
+        &= \frac{t_{i+1} - t_i}{t_{i+2} - t_i} B[t_i, t_{i+2}](t_{i+1}) + \frac{t_{i+3} - t_{i+1}}{t_{i+3} - t_{i+2}} B[t_{i+2}, t_{i+3}](t_{i+1}) \\
+        &= \frac{t_{i+1} - t_i}{t_{i+2} - t_i}
+    \end{align*}
+    Here, we've used that $B[a, b](x) = 0$ for $x \notin [a, b)$, and $B[a, b](x) = 1$ for $x \in [a, b)$. % chktex 9
+    For the second expression we similarly have
+    \begin{align*}
+        B_{i, 2}(t_{i+2}) &= B[t_i, t_{i+1}, t_{i+2}, t_{i+3}](t_{i+2}) = B[t_i, t_{i+1}, t_{i+3}](t_{i+2}) \\
+        &= \frac{t_{i+2} - t_i}{t_{i+3} - t_i} B[t_i, t_{i+1}](t_{i+2}) + \frac{t_{i+3} - t_{i+2}}{t_{i+3} - t_{i+1}} B[t_{i+1}, t_{i+3}](t_{i+2}) \\
+        &= \frac{t_{i+3} - t_{i+2}}{t_{i+3} - t_{i+1}}.
+    \end{align*}
+\end{solution}
+
+\begin{exercise}
+    Show that
+    \begin{align*}
+        B[\underbrace{a, \ldots, a}_{d+1}, b](x) &= \left(\frac{b - x}{b - a}\right)^d B[a, b](x), \\
+        B[a, \underbrace{b, \ldots, b}_{d+1}](x) &= \left(\frac{x - a}{b - a}\right)^d B[a, b](x).
+    \end{align*}
+    Use this to show that
+    \begin{equation*}
+        B[a, \underbrace{b, \ldots, b}_{d}, c](x) = \left(\frac{x - a}{b - a}\right)^d B[a, b](x) + \left(\frac{c - x}{c - b}\right)^d B[b, c](x).
+    \end{equation*}
+    Show that this B-spline is continuous on $\mathbb{R}$.
+\end{exercise}
+
+\begin{solution}
+    We begin by showing the first two expressions.
+    Note that when $t_i = t_d$, then
+    \begin{equation*}
+        [t_i, \ldots, t_d](\cdot - x)_+^{d-1} = 0 \quad \text{for } x \neq t_i,
+    \end{equation*}
+    and when we additionally define the term to be zero when $x = t_i$, we have
+    \begin{equation*}
+        B[\underbrace{a, \ldots, a}_{d+1}, b](x) = \frac{b - x}{b - a} B[\underbrace{a, \ldots, a}_{d}, b](x) = \cdots =
+        \left(\frac{b - x}{b - a}\right)^d B[a, b](x).
+    \end{equation*}
+    Similarly, we find that
+    \begin{equation*}
+        B[a, \underbrace{b, \ldots, b}_{d+1}](x) = \left(\frac{x - a}{b - a}\right)^d B[a, b](x).
+    \end{equation*}
+    Next, we then have by the recursive formula
+    \begin{align*}
+        B[a, \underbrace{b, \ldots, b}_{d}, c](x)
+        &= \frac{x - a}{b - a} B[a, \underbrace{b, \ldots, b}_{d}](x) + \frac{c - x}{c - b} B[\underbrace{b, \ldots, b}_{d}, c](x) \\
+        &= \frac{x - a}{b - a} \left( \frac{x - a}{b - a} \right)^{d-1} B[a, b](x) + \frac{c - x}{c - b} \left( \frac{c - x}{c - b} \right)^{d-1} B[b, c](x) \\
+        &= \left(\frac{x - a}{b - a}\right)^{d} B[a, b](x) + \left(\frac{c - x}{c - b}\right)^{d} B[b, c](x).
+    \end{align*}
+
+    Using again that
+    \begin{equation*}
+        B[a, b](x) =
+        \begin{cases}
+            0, & x \notin [a, b), \\ % chktex 9
+            1, & x \in [a, b), % chktex 9
+        \end{cases}
+    \end{equation*}
+    we can rewrite the spline as
+    \begin{equation*}
+        B[a, \underbrace{b, \ldots, b}_{d}, c](x) =
+        \begin{cases}
+            \left( \frac{x - a}{b - a} \right)^d & x \in [a, b), \\ % chktex 9
+            \left( \frac{c - x}{c - b} \right)^{d} & x \in [b, c), \\ % chktex 9
+            0 & \text{otherwise}.
+        \end{cases}
+    \end{equation*}
+    At the knot $b$, the spline is continuous, as
+    \begin{equation*}
+        \frac{b - a}{b - a} = 1 = \frac{c - b}{c - b},
+    \end{equation*}
+    while they are both zero at $x = a$ and $x = c$ respectively.
+\end{solution}
