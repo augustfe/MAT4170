@@ -565,3 +565,161 @@
     \end{equation*}
     while they are both zero at $x = a$ and $x = c$ respectively.
 \end{solution}
+
+\begin{exercise}
+    Show that
+    \begin{equation*}
+        B_{i, d}(x) = (-1)^{d+1} (t_{i+d+1} - t_i) [t_i, t_{i+1}, \ldots, t_{i+d+1}] (x - \cdot)_+^{d},
+        \quad x \in \mathbb{R}.
+    \end{equation*}
+    Hint: Use the fact that
+    \begin{equation*}
+        (t - x)_{+}^{d} - (-1)^{d+1} (x - t)_{+}^{d} = (t - x)^d.
+    \end{equation*}
+    Use this to show that for distinct knots,
+    \begin{equation*}
+        B_{i,d}(x) = (t_{i+d+1} - t_i) \sum_{j = i}^{i + d + 1} \frac{(x - t_j)_+^d}{\prod_{\substack{k = i \\ k \neq j}}^{i + d + 1} (t_k - t_j)}.
+    \end{equation*}
+\end{exercise}
+
+\begin{solution}
+    A reasonable place to start baced on the hint seems to note that
+    \begin{equation*}
+        (t - x)_+^d = (-1)^{d+1} (x - t)_+^d - (t - x)^d.
+    \end{equation*}
+    Then, if we can show that
+    \begin{equation*}
+        [t_i, t_{i+1}, \ldots, t_{i+d+1}] (\cdot - x)^d = 0
+    \end{equation*}
+    we are practically done with the first part.
+    As $(t - x)^d$ is a polynomial of degree $d$, and we have $d + 1$ knots, the term vanishes.
+
+    We then have
+    \begin{align*}
+        B_{i, d}(x)
+        &= (t_{i+d+1} - t_i) [t_i, t_{i+1}, \ldots, t_{i+d+1}] (\cdot - x)_+^{d} \\
+        &= (t_{i+d+1} - t_i) [t_i, t_{i+1}, \ldots, t_{i+d+1}] \left(
+            (-1)^{d+1}(x - \cdot)_+^{d} - (t_{i+d+1} - x)^d
+        \right) \\
+        &= (-1)^{d+1} (t_{i+d+1} - t_i) [t_i, t_{i+1}, \ldots, t_{i+d+1}] (x - \cdot)_+^{d}
+    \end{align*}
+    as desired.
+
+    We already know by the forward difference formula that we can write
+    \begin{equation*}
+        B_{i, d}(x)
+        = (t_{i+d+1} - t_i) \sum_{j = 1}^{i + d + 1} \frac{
+            (t_j - x)_+^d
+        }{
+            \prod_{\substack{k = i \\ k \neq j}}^{i + d + 1} (t_j - t_k)
+        }.
+    \end{equation*}
+    We can rewrite the denominator as
+    \begin{equation*}
+        \prod_{\substack{k = i \\ k \neq j}}^{i + d + 1} (t_j - t_k)
+        = \prod_{\substack{k = 1 \\ k \neq j}}^{i + d + 1} (-1)(t_k - t_j)
+        = (-1)^{d+1} \prod_{\substack{k = 1 \\ k \neq j}}^{i + d + 1} (t_k - t_j).
+    \end{equation*}
+    Using the forward difference formula on $(-1)^{d+1} (x - t)_+^d$ we then find
+    \begin{align*}
+        B_{i, d}(x)
+        &= (t_{i+d+1} - t_i) (-1)^{d+1} \sum_{j = 1}^{i + d + 1} \frac{
+            (x - t_j)_+^d
+        }{
+            \prod_{\substack{k = i \\ k \neq j}}^{i + d + 1} (t_j - t_k)
+        } \\
+        &= (t_{i+d+1} - t_i) (-1)^{d+1} \sum_{j = 1}^{i + d + 1} \frac{
+            (x - t_j)_+^d
+        }{
+            (-1)^{d+1} \prod_{\substack{k = i \\ k \neq j}}^{i + d + 1} (t_k - t_j)
+        } \\
+        &= (t_{i+d+1} - t_i) \sum_{j = 1}^{i + d + 1} \frac{
+            (x - t_j)_+^d
+        }{
+            \prod_{\substack{k = i \\ k \neq j}}^{i + d + 1} (t_k - t_j)
+        },
+    \end{align*}
+    as desired.
+\end{solution}
+
+\begin{exercise}
+    Use the recursion formula to show that (for $d \geq 1$)
+    \begin{equation*}
+        \sum_{i = 1}^{n} B_{i, d}(x) = 1,
+        \quad x \in [t_{d+1}, t_{n+1}].
+    \end{equation*}
+\end{exercise}
+
+\begin{solution}
+    We have
+    \begin{align*}
+        \sum_{i = 1}^{n} B_{i, d}(x)
+        &= \sum_{i = 1}^{n} \left(
+            \frac{x - t_i}{t_{i + d} - t_i} B_{i, d-1}(x)
+            + \frac{t_{i + d + 1} - x}{t_{i + d + 1} - t_{i + 1}} B_{i + 1, d-1}(x)
+        \right) \\
+        &= \sum_{i = 1}^n \frac{x - t_i}{t_{i + d} - t_i} B_{i, d-1}(x)
+        + \sum_{i = 1}^{n} \frac{t_{i + d + 1} - x}{t_{i + d + 1} - t_{i + 1}} B_{i + 1, d-1}(x) \\
+        &= \sum_{i = 1}^n \frac{x - t_i}{t_{i + d} - t_i} B_{i, d-1}(x)
+        + \sum_{i = 2}^{n + 1} \frac{t_{i + d } - x}{t_{i + d} - t_{i}} B_{i, d-1}(x) \\
+        &= \frac{x - t_1}{t_{1 + d} - t_1} B_{1, d-1}(x)
+        + \sum_{i = 2}^{n} \left(
+            \left(
+                \frac{x - t_i}{t_{i + d} - t_i}
+                + \frac{t_{i + d} - x}{t_{i + d} - t_{i}}
+            \right) B_{i, d-1}(x)
+        \right) \\
+        &\quad + \frac{t_{n + d + 1} - x}{t_{n + d + 1} - t_{n + 1}} B_{n + 1, d-1}(x) \\
+        &= \frac{x - t_1}{t_{1 + d} - t_1} B_{1, d-1}(x)
+        + \sum_{i = 2}^{n} \left(
+            \frac{t_{i + d} - t_i}{t_{i + d} - t_i}
+        \right) B_{i, d-1}(x) \\
+        &\quad + \frac{t_{n + d + 1} - x}{t_{n + d + 1} - t_{n + 1}} B_{n + 1, d-1}(x) \\
+        &= \frac{x - t_1}{t_{1 + d} - t_1} B_{1, d-1}(x)
+        + \sum_{i = 2}^{n} B_{i, d-1}(x)
+        + \frac{t_{n + d + 1} - x}{t_{n + d + 1} - t_{n + 1}} B_{n + 1, d-1}(x).
+    \end{align*}
+    The first term can be written more explicitly as
+    \begin{equation*}
+        \frac{x - t_1}{t_{1 + d} - t_1} B_{1, d-1}(x)
+        = \frac{x - t_1}{t_{1 + d} - t_1} B[t_1, \ldots, t_{d+1}](x)
+    \end{equation*}
+    which is zero for $x \geq t_{d+1}$.
+    The last term can be written as
+    \begin{equation*}
+        \frac{t_{n + d + 1} - x}{t_{n + d + 1} - t_{n + 1}} B_{n + 1, d-1}(x)
+        = \frac{t_{n + d + 1} - x}{t_{n + d + 1} - t_{n + 1}} B[t_{n + 1}, \ldots, t_{d + n + 1}](x)
+    \end{equation*}
+    which similarly is zero for $x \leq t_{n + 1}$.
+
+    Therefore, for $x \in [t_{d+1}, t_{n+1}]$, we have
+    \begin{equation*}
+        \sum_{i = 1}^{n} B_{i, d}(x) = \sum_{i = 2}^{n} B_{i, d-1}(x) = \cdots = \sum_{i = d+1}^{n} B_{i, 0}(x) = 1.
+    \end{equation*}
+\end{solution}
+
+\begin{exercise}
+    Prove Theorem~3.5.
+    Hint: Derive an analogy of (3.16) by first expressing $[t_i, \ldots, t_{i+d+1}]$ in the form
+    \begin{equation*}
+        [t_j, t_i, \ldots, \hat{t}_j, \ldots, t_{i+d+1}].
+    \end{equation*}
+\end{exercise}
+
+\begin{solution}
+    This was already done as the first part of Exercise~3.5.
+\end{solution}
+
+\begin{exercise}
+    Given a knot vector $\mathbf{t} = (t_i)_{i=1}^{n+d+1}$ and a real number $x$, with $x \in [t_{d+1}, t_{n+1}]$, write a routine to determine an index $\mu$ such that $x \in [t_{\mu}, t_{\mu+1}]$ with $[t_{\mu}, t_{\mu+1}]$ non-empty.
+    A call to this routine is always needed before running Algorithms~1 and 2 of Section~3.9.
+    By letting $\mu$ be an input parameter as well as an output parameter you can minimize the searching, for example during plotting when the routine is called with many values of $x$ in the same know interval.
+\end{exercise}
+
+\begin{solution}
+    This simply involves implementing a binary search, assuming that $\mathbf{t}$ is sorted.
+\end{solution}
+
+\begin{exercise}
+    Implement Algorithm~1 of Section~3.9 in your favourite programming lanuage.
+\end{exercise}
