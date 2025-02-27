@@ -723,3 +723,42 @@
 \begin{exercise}
     Implement Algorithm~1 of Section~3.9 in your favourite programming lanuage.
 \end{exercise}
+
+\begin{solution}
+    Implementing the algorithm requires a little bit of setup, in order to facilitate an efficient implementation.
+    I'll therefore work through the first couple of steps.
+    We begin by fixing $x \in [t_{\mu}, t_{\mu+1}]$ and $B_{\mu, 0}(x) = 1$.
+    We then have
+    \begin{align*}
+        B_{\mu, 1}(x) &= \frac{x - t_{\mu}}{t_{\mu+1} - t_{\mu}} B_{\mu, 0}(x) + \frac{t_{\mu+2} - x}{t_{\mu+2} - t_{\mu+1}} B_{\mu+1, 0}(x) \\
+        &= \frac{x - t_{\mu}}{t_{\mu+1} - t_{\mu}} + 0 = \frac{x - t_{\mu}}{t_{\mu+1} - t_{\mu}} \\
+        B_{\mu - 1, 1}(x) &= \frac{x - t_{\mu-1}}{t_{\mu} - t_{\mu-1}} B_{\mu - 1, 0}(x) + \frac{t_{\mu+1} - x}{t_{\mu+1} - t_{\mu}} B_{\mu, 0}(x) \\
+        &= 0 + \frac{t_{\mu+1} - x}{t_{\mu+1} - t_{\mu}} = \frac{t_{\mu+1} - x}{t_{\mu+1} - t_{\mu}}.
+    \end{align*}
+    The computational graph for the first couple steps is then illustrated in Figure~\ref{fig:comp-graph}.
+    The illustration on the right more explicitly encodes the dependence on previous values.
+    \begin{figure}[ht]
+        \centering
+        \input{3_bsplines/bspline.tex}
+        \caption{Computational graph for the first couple steps of Algorithm~1.\label{fig:comp-graph}}
+    \end{figure}
+
+    \todo[inline,color=green!10]{NOTE:\@ Implement the algorithm without recursion.}
+\end{solution}
+
+\begin{exercise}
+    Implement Algorithm~2 of Section~3.9 in your favourite programming language.
+\end{exercise}
+
+\begin{solution}
+    A crucial detail of this algorithm is that for the interval $[t_{\mu}, t_{\mu+1}]$, we require the value of $t_{\mu + d + 1}$, which is not entirely clear when we are in the last interval.
+    To overcome this, we can simply append the knot vector with $d$ additional knots, where the last $d$ knots are equal to $t_{n+1}$.
+    This way, we can always find the value of $t_{\mu + d + 1}$.
+    Doing this, we generate Figure~\ref{fig:spline_deboor}.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\linewidth]{3_bsplines/de_boor.pdf}
+        \caption{Cubic B-splines on distinct knots computed with de Boor's algorithm without recursion. $n = 5$, with $\mathbf{t} = (0.0, 1.1, 2.4, 3, 4, 5.2, 6.0, 7.2, 8)$.\label{fig:spline_deboor}}
+    \end{figure}
+\end{solution}
