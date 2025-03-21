@@ -1,0 +1,92 @@
+\section{Further properties of B-splines}
+
+\begin{exercise}
+    Prove \eqref{eq:4.3}. % chktex 2
+\end{exercise}
+
+\begin{solution}
+    \cref{eq:4.3} states that
+    \begin{equation}\label{eq:4.3}
+        \frac{t_{i+d} - x}{t_{i+d} - t_i} (y - t_{i}) + \frac{x - t_i}{t_{i+d} - t_i} (y - t_{i+d}) = y - x.
+        \tag{4.3}
+    \end{equation}
+    Rearranging the terms on the left-hand side gives
+    \begin{gather*}
+        \frac{t_{i+d} - x}{t_{i+d} - t_i} (y - t_{i}) + \frac{x - t_i}{t_{i+d} - t_i} (y - t_{i+d})
+        = \frac{(t_{i+d} - x)(y - t_i) + (x - t_i)(y - t_{i+d})}{t_{i+d} - t_i} \\
+        = \frac{
+            (t_{i+d} - t_i) y - xy + xy - t_{i+d} t_i + t_{i+d} t_i + (t_i - t_{i+d}) x
+        }{t_{i+d} - t_i} \\
+        = \frac{t_{i+d} - t_i}{t_{i+d} - t_i} (x - y) \\
+        = x - y,
+    \end{gather*}
+    as we wanted to show.
+\end{solution}
+
+\begin{exercise}
+    Derive the formula of Theorem~4.8.
+    Hint:\ differentiate \eqref{eq:3.15} $r$ times and use Lemma~4.6. % chktex 2
+\end{exercise}
+
+\begin{solution}
+    \cref{eq:3.15} states the recursion formula for B-splines, namely
+    \begin{equation}\label{eq:3.15}
+        B_{i, d}(x)
+        = \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}(x)
+        + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}(x),
+        \tag{3.15}
+    \end{equation}
+    for $d \geq 1$.
+    Differentiating \cref{eq:3.15}, dropping the $(x)$ for brevity, gives us
+    \begin{gather*}
+        B_{i, d}'
+        = \frac{B_{i, d-1}}{t_{i+d} - t_i}
+        + \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}'
+        - \frac{B_{i+1, d-1}}{t_{i+d+1} - t_{i+1}}
+        + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}' \\
+        B_{i, d}' = \left(
+            \frac{B_{i, d-1}}{t_{i+d} - t_i}
+            -  \frac{B_{i+1, d-1}}{t_{i+d+1} - t_{i+1}}
+        \right)
+        + \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}'
+        + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}' \\
+        B_{i, d}' = \frac{1}{d} B_{i, d}'
+        + \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}'
+        + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}' \\
+        \frac{d - 1}{d} B_{i, d}'
+        = \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}'
+        + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}' \\
+        B_{i, d}' =
+        \frac{d}{d - 1} \left(
+            \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}'
+            + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}'
+        \right),
+    \end{gather*}
+    which is exactly Theorem~4.8 for $k = 1$.
+
+    Assume now that the formula holds for $k = r$, i.e.,
+    \begin{equation}
+        B_{i, d}^{(r)}
+        = \frac{d}{d - r} \left(
+            \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}^{(r)}
+            + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}^{(r)}
+        \right).
+    \end{equation}
+    Differentiating yet again gives
+    \begin{align*}
+        \frac{d - r}{d} B_{i, d}^{(r+1)}
+        &= \frac{B_{i, d-1}^{(r)}}{t_{i+d} - t_i} - \frac{B_{i+1, d-1}^{(r)}}{t_{i+d+1} - t_{i+1}}
+        + \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}^{(r+1)}
+        + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}^{(r+1)} \\
+        \frac{d - r}{d} B_{i, d}^{(r+1)}
+        &= \frac{1}{d} B_{i, d}^{(r+1)}
+        + \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}^{(r+1)}
+        + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}^{(r+1)} \\
+        B_{i, d}^{(r+1)}(x)
+        &= \frac{d}{d - (r + 1)} \left(
+            \frac{x - t_i}{t_{i+d} - t_i} B_{i, d-1}^{(r+1)} (x)
+            + \frac{t_{i+d+1} - x}{t_{i+d+1} - t_{i+1}} B_{i+1, d-1}^{(r+1)} (x)
+        \right),
+    \end{align*}
+    where we've used Theorem~4.7 in the last step, proving the formula by induction.
+\end{solution}

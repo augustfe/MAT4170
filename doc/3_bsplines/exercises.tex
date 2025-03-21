@@ -756,9 +756,49 @@
     This way, we can always find the value of $t_{\mu + d + 1}$.
     Doing this, we generate Figure~\ref{fig:spline_deboor}.
 
-    \begin{figure}
+    \begin{figure}[ht]
         \centering
         \includegraphics[width=0.6\linewidth]{3_bsplines/de_boor.pdf}
         \caption{Cubic B-splines on distinct knots computed with de Boor's algorithm without recursion. $n = 5$, with $\mathbf{t} = (0.0, 1.1, 2.4, 3, 4, 5.2, 6.0, 7.2, 8)$.\label{fig:spline_deboor}}
     \end{figure}
+\end{solution}
+
+\begin{exercise}
+    Suppose that $d = 3$ and that the knot vector is
+    \begin{equation*}
+        \mathbf{t} = (0, 1, 2, 3, 4).
+    \end{equation*}
+    With this knot vector we can only associate one cubic B-spline, $B_{1,3}$.
+    Therefore, if we want to compute $B_{1,3}(x)$ for some $x \in (0, 4)$, Algorithms~1 and~2 of Section~3.9 do not apply.
+    Show, however, that by augmenting the knot vector to
+    \begin{equation*}
+        \hat{\mathbf{t}} = (0, 0, 0, 0, 1, 2, 3, 4, 4, 4, 4),
+    \end{equation*}
+    we can compute $B_{1,3}$ in the interval $(0, 4)$ using Algorithm~2.
+\end{exercise}
+
+\begin{solution}
+    We begin by illustrating the indices of $\hat{\mathbf{t}}$ relative to $\mathbf{t}$.
+    These are
+    \begin{equation*}
+        \hat{\mathbf{t}} = (t_{1-3}, t_{1-2}, t_{1-1}, t_1, t_2, t_3, t_4, t_5, t_{5+1}, t_{5+2}, t_{5+3}).
+    \end{equation*}
+    Then, for any $x \in (0, 4)$, we can find $\mu \in \{1, 2, 3, 4, 5\}$ such that $x \in [t_\mu, t_{\mu+1}]$.
+    We can then compute $B_{1, 3}(x)$ by setting
+    \begin{equation*}
+        c_i^0 =
+        \begin{cases}
+            1, & i = 1 \\
+            0, & \text{otherwise}
+        \end{cases}
+        \quad \text{for } i = \mu - 3, \ldots, \mu.
+    \end{equation*}
+    The algorithm then follows similarly, as for $r = 1, 2, 3$ and $i = \mu - 3 + r, \ldots, \mu$ we have
+    \begin{equation*}
+        c_i^r
+        = \frac{t_{i+3-r+1} - x}{t_{i+3-r+1} - t_i} c_{i-1}^{r-1}
+        + \frac{x - t_i}{t_{i+3-r+1} - t_{i}} c_{i}^{r-1}.
+    \end{equation*}
+    The result is then $B_{1, 3}(x) = c_{\mu}^3$.
+    We are at most indexing $t_{i+3-r+1} = t_{\mu + 3}$, and atleast $t_i = t_{\mu - 3}$, so the algorithm is now well-defined for all points $x \in (0, 4)$.
 \end{solution}
