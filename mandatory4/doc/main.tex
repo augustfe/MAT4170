@@ -1,0 +1,74 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{ % this is just my personal choice, feel free to change things
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black},
+}
+\usepackage[capitalise]{cleveref}
+
+\geometry{margin=1in}
+
+\title{Mandatory Assignment 4}
+\author{August Femtehjell}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem 1: Modelling cross sections of a heart}
+We are given nine \verb|.dat| files, containing the contours of a heart at different levels.
+\verb|hj1.dat| is at the bottom, while \verb|hj9.dat| is at the top.
+Each file contains values of the form $(x_i, y_i, z_i)_{i = 1}^n$, where $z_i$ is constant for each file.
+
+We firstly need to order the data, such that we have $(u_i, x_i, y_i, z_i)_{i = 1}^n$, where $(u_i)_{i = 1}^n$ is an increasing sequence with $u_1 = 0$.
+We do this through chord length parametrization, setting
+\begin{equation}
+    u_i = u_{i - 1} + \sqrt{
+        (x_i - x_{i - 1})^2 + (y_i - y_{i - 1})^2 + (z_i - z_{i - 1})^2
+    }
+\end{equation}
+for $i = 2, \ldots, n$.
+We then approximate the data by a cubic splines, using a least squares approach.
+
+We choose the knots to be uniformly distributed, with 5\%, 10\% and 20\% of the number of data points.
+As we are seeking cubic splines, we have $d = 3$, and seek the splines
+\begin{equation}
+    g(x) = \sum_{i = 1}^{n} c_j B_{j, d, \mathbf{t}}(x)
+\end{equation}
+such that
+\begin{equation}
+    \sum_{i = 1}^{m} \left( g(x_i) - y_i \right)^2
+\end{equation}
+is minimized.
+With
+\begin{equation}
+    A
+    = \left[ B_{j, d, \mathbf{t}}(x_i) \right]_{i,j = 1}^{m,n}
+    =
+    \begin{bmatrix}
+        B_1(x_1) & \cdots & B_n(x_1) \\
+        \vdots & \ddots & \vdots \\
+        B_1(x_m) & \cdots & B_n(x_m)
+    \end{bmatrix}
+\end{equation}
+and letting $\mathbf{c} = [c_1, \ldots, c_n]^T \in \mathbb{R}^n$ and $\mathbf{y} = [y_1, \ldots, y_m]^T \in \mathbb{R}^m$, the system we need to solve becomes
+\begin{equation}
+    (A^T A) \mathbf{c} = A^T \mathbf{y},
+\end{equation}
+which we solve by inverting $A^T A$.
+
+Does it then make sense to space the knots with $t_1 = u_1 = 0$ and $t_{n+d+1} = u_n$?
+
+\end{document}
