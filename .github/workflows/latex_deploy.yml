@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Compile both main.tex & exam.tex
+      - name: Compile LaTeX documents
         uses: xu-cheng/latex-action@v3
         with:
           # point at multiple root files (bash-globbed)

@@ -30,6 +30,8 @@ ipython_config.py
 *.cb2
 .*.lb
 doc/main.pdf
+*/main.pdf
+exam/exam.pdf
 
 ## Intermediate documents:
 *.dvi
