@@ -1,1 +1,40 @@
 \section{Bernstein polynomials}
+
+A Bernstein polynomial denoted $B_i^d$ is defined by
+\begin{equation}
+    B_i^d(x) = \binom{d}{i} x^i (1 - x)^{d - i},
+\end{equation}
+where $d$ is the degree of the polynomial, and $i$ is the index of the polynomial.
+These polynomials satisfy a number of interesting properties.
+
+Firstly, they are all non-negative on the interval $[0, 1]$.
+We can clearly see this as then both $x \geq 0$ and $1 - x \geq 0$ (and of course the binomial coefficient as well).
+In addition, for all $x \in \mathbb{R}$ we have that
+\begin{equation}
+    \sum_{i = 0}^{d} B_i^d(x) = 1,
+\end{equation}
+and the polynomials therefore form a partition of unity.
+We can see this by noting
+\begin{equation}
+    1
+    = 1^d
+    = (x + (1 - x))^d
+    = \sum_{i = 0}^{d} \binom{d}{i} x^i (1 - x)^{d - i}
+    = \sum_{i = 0}^{d} B_i^d(x),
+\end{equation}
+by the binomial theorem.
+
+In order to compute the value of a Bernstein polynomial efficiently, we note that
+\begin{equation}
+    \binom{d}{i} = \binom{d - 1}{i - 1} + \binom{d - 1}{i},
+\end{equation}
+most easily recalled by thinking about Pascals triangle.
+With this, we have that
+\begin{align*}
+    B_{i}^{d}
+    &= \binom{d}{i} x^i (1 - x)^{d - i} \\
+    &= \left(\binom{d - 1}{i - 1} + \binom{d - 1}{i}\right) x^i (1 - x)^{d - i} \\
+    &= x \binom{d - 1}{i - 1} x^{i - 1} (1 - x)^{(d - 1) - (i - 1)} + (1 - x) \binom{d - 1}{i} x^i (1 - x)^{(d - 1) - i} \\
+    &= x B_{i - 1}^{d - 1}(x) + (1 - x)B_{i}^{d - 1},
+\end{align*}
+forming the basis for de Casteljau's algorithm.
