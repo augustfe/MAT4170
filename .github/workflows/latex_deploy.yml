@@ -1,4 +1,5 @@
-name: Build LaTeX document
+name: Build LaTeX Documents & Deploy
+
 on:
   push:
     branches: [ main ]
@@ -6,26 +7,71 @@ on:
     branches: [ main ]
 
 jobs:
-  build_latex:
+  compile_latex_document: # Single job definition using a matrix
+    name: Compile ${{ matrix.config.doc_name }} Document # Dynamic job name
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true # Default is true; if one matrix job fails, others might be cancelled
+      matrix:
+        config: # Define the varying configurations here
+          - doc_name: Main
+            root_file: main.tex
+            working_dir: doc/
+            output_pdf_filename: main.pdf
+            artifact_name: main-pdf
+          - doc_name: Exam
+            root_file: exam.tex
+            working_dir: exam/
+            output_pdf_filename: exam.pdf
+            artifact_name: exam-pdf
     steps:
-      - name: Set up Git repository
+      - name: Checkout code
         uses: actions/checkout@v4
-      - name: Compile LaTeX document
+
+      - name: Compile ${{ matrix.config.doc_name }} LaTeX document (${{ matrix.config.root_file }})
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: main.tex
-          working_directory: doc/
-      - name: Copy
-        run: |
-          mkdir out
-          cp doc/main.pdf out/main.pdf
-      - name: Upload PDF file
+          root_file: ${{ matrix.config.root_file }}
+          working_directory: ${{ matrix.config.working_dir }}
+          # Caching is enabled by default in latex-action v3+
+          # Add other options if needed, e.g.:
+          # compiler: xelatex
+          # args: -file-line-error -interaction=nonstopmode
+
+      - name: Upload ${{ matrix.config.doc_name }} PDF
         uses: actions/upload-artifact@v4
         with:
-          name: PDF
-          path: out/main.pdf
-      - name: Deploy
+          name: ${{ matrix.config.artifact_name }}
+          path: ${{ matrix.config.working_dir }}/${{ matrix.config.output_pdf_filename }}
+
+  deploy_to_gh_pages:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # This job depends on the successful completion of all matrix jobs from 'compile_latex_document'
+    needs: [compile_latex_document]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download main PDF artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: main-pdf # This name corresponds to matrix.config.artifact_name for the Main document
+          path: deployment_assets
+
+      - name: Download exam PDF artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: exam-pdf # This name corresponds to matrix.config.artifact_name for the Exam document
+          path: deployment_assets
+
+      - name: List files in deployment assets (for debugging)
+        run: ls -R deployment_assets
+
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: out
+          folder: deployment_assets
+          branch: gh-pages
+          clean: true

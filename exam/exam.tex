@@ -21,7 +21,6 @@
     citecolor={blue!50!black},
     urlcolor={blue!80!black},
 }
-\usepackage{todonotes}
 
 \usepackage{cancel}
 \usepackage{mathtools}
@@ -31,30 +30,6 @@
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}%
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}%
-
-\newtheoremstyle{exerciseStyle}
-{ } % Space above
-{ } % Space below
-{\normalfont} % Body font % chktex 1
-{ } % Indent amount
-{\bfseries} % Theorem head font
-{.} % Punctuation after theorem head
-{ } % Space after theorem head
-{\thmname{#1}\thmnumber{ #2}} % Theorem head spec (can be left empty, meaning `normal`)
-\theoremstyle{exerciseStyle}
-\newtheorem{exercise}{Exercise}[section]
-
-\newtheoremstyle{solutionStyle}
-{ } % Space above
-{ } % Space below
-{\normalfont} % Body font % chktex 1
-{ } % Indent amount
-{\bfseries} % Theorem head font
-{.} % Punctuation after theorem head
-{ } % Space after theorem head
-{\thmname{#1}\thmnumber{ #2}} % Theorem head spec (can be left empty, meaning `normal`)
-\theoremstyle{solutionStyle}
-\newtheorem{solution}{Solution}[section]
 
 % 1. Define a ‘breaktheorem’ style that:
 %    - Uses bold for the theorem heading,
@@ -99,18 +74,13 @@
 \tableofcontents
 
 \begin{abstract}
-    This document contains my solutions to the exercises for the course MAT4170--Spline Methods, taught at the University of Oslo in the spring of 2025.
+    This document contains my summary for the course MAT4170 -- Spline Methods, taught at the University of Oslo in the spring of 2025, in preperation for the final oral exam. % chktex 8
+    This summary is based on the \href{https://www.uio.no/studier/emner/matnat/math/MAT4170/v25/undervisningsmateriale/spline_notes.pdf}{lecture notes} for the course, draft dated 25th of March, 2025.
     The code for everything, as well as this document, can be found at my GitHub repository: \url{https://github.com/augustfe/MAT4170}.
 \end{abstract}
 
-\include{1_bb_poly/exercises}
+\include{bernstein/bernstein}
 
-\include{2_splines_in_bb/exercises}
-
-\include{3_bsplines/exercises}
-
-\include{4_further_properties/exercises}
-
-\include{5_knot_insertion/exercises}
+\include{bspline/bspline}
 
 \end{document} % chktex 17

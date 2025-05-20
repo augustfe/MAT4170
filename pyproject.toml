@@ -10,3 +10,6 @@ dependencies = [
     "numpy>=2.2.2",
     "pytest>=8.3.4",
 ]
+
+[tool.uv.workspace]
+members = ["mandatory4/src"]

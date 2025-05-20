@@ -1,0 +1,27 @@
+\section{Knot insertion}
+
+\begin{exercise}
+    Show that the spline curve $\mathbf{s}$ in $\mathbb{R}^3$ satisfies a variation diminishing property analogous to Theorem~5.8:\ the number of crossing of $\mathbf{s}$ through a plane $P$ is not greater than the number of crossings of the control polygon of $\mathbf{s}$ through $P$.
+\end{exercise}
+
+\begin{solution}
+    The idea is to follow the proof of Theorem~5.8, but with the control polygon replaced by the control points of the spline curve.
+    For completeness, the altered proof is stated here.
+    Suppose the plane is
+    \begin{equation*}
+        P = \{ \mathbf{p} \in \mathbb{R}^3 : \mathbf{p} \cdot \mathbf{n} - a = 0 \},
+    \end{equation*}
+    for some unit vector $\mathbf{n}$ and scalar $a \in \mathbb{R}$, and let
+    \begin{equation*}
+        \sigma(x) = \mathbf{s}(x) \cdot \mathbf{n} - a, \quad x \in I.
+    \end{equation*}
+    Then $S^{-}_{I}(\sigma)$ is the number of times $\mathbf{s}$ crosses $P$.
+    As $\sum_{i = 0}^n B_{i, \mathbf{t}}(x) = 1$ for all $x \in I$, we have
+    \begin{equation*}
+        \sigma(x) = \mathbf{s}(x) \cdot \mathbf{n} - a = \sum_{i = 0}^n (\mathbf{c}_i B_{i, \mathbf{t}}(x)) \cdot \mathbf{n} - a = \sum_{i = 0}^n \gamma_i B_{i, \mathbf{t}}(x),
+    \end{equation*}
+    where $\gamma_i = \mathbf{c}_i \cdot \mathbf{n} - a$.
+    $S^{-}_I(\boldsymbol{\gamma})$ is then the number of times the control polyogon of $\mathbf{s}$ crosses $P$, where $\boldsymbol{\gamma} = (\gamma_1, \ldots, \gamma_n)$.
+
+    Since $\sigma$ is a spline function with coefficients $\gamma_i$, the variation diminishing property of $\sigma$ (Theorem~5.7) implies that $S^{-}_I(\boldsymbol{\sigma}) \leq S^{-}(\boldsymbol{\gamma})$.
+\end{solution}
