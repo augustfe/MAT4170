@@ -1,0 +1,70 @@
+\section{B-Splines}
+A B-spline is defined from a set of knots
+\begin{equation}
+    \boldsymbol{t} = (t_1, t_2, \dots, t_{n + d + 1}),
+\end{equation}
+where $n$ and $d$ are respectively the number and degree of the B-splines.
+We assume that the knotvector satisfies
+\begin{equation}
+    t_{i} \leq t_{i + 1}
+    \quad\text{and}\quad
+    t_{i} < t_{i + d + 1}.
+\end{equation}
+The $i$-th B-spline is then defined by
+\begin{equation}
+    B_{i, d, \boldsymbol{t}}(x)
+    = B[t_i, t_{i + 1}, \dots, t_{i + d + 1}](x)
+    = [t_i, t_{i + 1}, \dots, t_{i + d + 1}](\cdot - x)_+^d,
+\end{equation}
+where we here use the divided differences of the truncated power.
+
+B-splines satisfy the property that $B_{i, d, \boldsymbol{t}}(x)$ is zero for all $x \notin [t_i, t_{i + d + 1}]$.
+We can see this simply for $x > t_{i + d + 1}$, as then
+\begin{equation}
+    (t_j - x)_+^d = 0,
+    \qquad
+    j = i, i + 1, \dots, i + d + 1.
+\end{equation}
+In the other case, where $x < t_i$, we need an important result for divided differences.
+One definition for divided differences is that for a function $f$ defined at points $x_0, x_1, \dots, x_k$, the divided difference of $f$ is the leading coefficient in monomial form of the interpolating polynomial.
+Importantly in our case, for $x < t_i$, we have that
+\begin{equation}
+    (t_j - x)_+^d = (t_j - x)^d \in \pi_d
+    \qquad
+    j = i, i + 1, \dots, i + d + 1.
+\end{equation}
+Of important note is that we have $d + 2$ points, such that the interpolating polynomial has a zero coefficient in the leading term.
+
+We also have translation invariance of the B-splines, i.e.\ that
+\begin{equation}
+    B[t_i + y, t_{i + 1} + y, \dots, t_{i + d + 1} + y](x)
+    = B[t_i, t_{i + 1}, \dots, t_{i + d + 1}](x - y).
+\end{equation}
+We can see this as
+\begin{equation}
+    ((t + y) - x)_+^d = (t - (x - y))_+^d.
+\end{equation}
+
+In the simples case, where $d = 0$, we have
+\begin{equation}
+    B_i,0(x) = -(t_i - x)_+^d + (t_{i + 1} - x)_+^d,
+\end{equation}
+showing clearly that the $B_{i, 0}$ is only non-zero on the interval $[t_i, t_{i + 1}]$, where it is equal to one.
+
+In the case of an arbitrary function $f$, we that
+\begin{equation}
+    [x_0, x_1, \dots, x_{k}]f
+    = \sum_{i = 0}^{k} \frac{
+        f(x_i)
+    }{
+        \prod_{\substack{j = 0 \\ j \neq i}}^{k} (x_i - x_j)
+    }.
+\end{equation}
+This allows us to write explicitly
+\begin{equation}
+    B_{i, d}(x) = \sum_{j = i}^{i + d + 1} a_j (t_j - x)_+^d,
+\end{equation}
+with
+\begin{equation}
+    a_j = \frac{t_{i + d + 1} - t_i}{\prod_{\substack{k = i \\ j \neq i}}^{i + d + 1} (t_j - t_k)}.
+\end{equation}

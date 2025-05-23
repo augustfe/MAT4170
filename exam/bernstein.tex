@@ -339,3 +339,114 @@ We now let the $g_i$ segments be cubic polynomials, and we now have slope values
     g'(x_i) = s_i,
     \qquad i = 1, 2, \dots, m.
 \end{equation}
+In the cubic case, we resolve this by setting
+\begin{equation}
+    g_i(x) = \sum_{j = 0}^{3} c_j B_j^3(\lambda_i(x)),
+\end{equation}
+with
+\begin{equation}
+    c_0 = y_i
+    \qquad
+    c_1 = y_i + \frac{h_i}{3} s_i
+    \qquad
+    c_2 = y_{i + 1} - \frac{h_i}{3} s_i
+    \qquad
+    c_3 = y_{i + 1}.
+\end{equation}
+
+\subsubsection{\texorpdfstring{$C^2$}{C2} cubic spline interpolation}
+In order achieve a $C^2$ continuous cubic spline, we have a couple of options.
+Here, we wish to find $g \in C^2[x_1, x_m]$ such that $g(x_i) = y_i$ for $i = 1, 2, \dots, m$, while additionally requiring
+\begin{equation}
+    g'(x_1) = s_1
+    \quad\text{and}\quad
+    g'(x_m) = s_m.
+\end{equation}
+One way to do this is to let $g$ be the Hermite interpolant from the previous section, and solving for the slopes $s_i$ such that
+\begin{equation}
+    g_i''(x_{i+1}) = g_{i + 1}''(x_{i + 1}).
+\end{equation}
+Let
+\begin{equation}
+    g_i = \sum_{j = 0}^{3} c_i B_j^3(\lambda_i)
+    \quad\text{and}\quad
+    g_{i + 1} = \sum_{j = 0}^{3} e_i B_j^3(\lambda_{i + 1}).
+\end{equation}
+Then,
+\begin{align*}
+    g_i''(x_{i + 1}) &= \frac{6}{h_i^2} (c_1 - 2 c_2 + c_3)
+    = \frac{6}{h_{i}} \left(-\frac{y_{i} - y_{i + 1}}{h_i} \frac{s_i + 2 s_{i + 1}}{3}\right), \\
+    g_{i + 1}''(x_{i + 1}) &= \frac{6}{h_{i + 1}^2} (e_0 - 2 e_1 + e_2)
+    = \frac{6}{h_{i + 1}} \left(\frac{y_{i + 1} - y_{i + 2}}{h_{i + 1}} - \frac{2s_{i + 1} - s_{i + 2}}{3}\right).
+\end{align*}
+Equating the two gives us
+\begin{equation}
+    \alpha_i s_{i - 1} + 2 s_i + \beta s_{i + 1} = b_i
+\end{equation}
+with
+\begin{equation}
+    \alpha_i = \frac{h_i}{h_{i - 1} + h_i}
+    \quad\text{and}\quad
+    \beta_i = \frac{h_{i-1}}{h_{i - 1} + h_{i}},
+\end{equation}
+and
+\begin{equation}
+    b_i = \frac{3}{h_{i - 1} + h_i} \left(
+        h_i \frac{y_i - y_{i - 1}}{h_{i - 1}}
+        + h_{i - 1} \frac{y_{i + 1} - y_i}{h_i}
+    \right).
+\end{equation}
+This results in the linear system
+\begin{equation}
+    \begin{bmatrix}
+        2 & \beta_2 \\
+        \alpha_3 & 2 & \beta_3 \\
+        & \ddots & \ddots & \ddots \\
+        && \alpha_{m - 2} & 2 & \beta_{m - 2} \\
+        &&& \alpha_{m - 1} & 2
+    \end{bmatrix}
+    \begin{bmatrix}
+        s_2 \\ s_3 \\ \vdots \\ s_{m - 2} \\ s_{m - 1}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        b_2 - \alpha_2 s_1 \\
+        b_3 \\
+        \vdots \\
+        b_{m - 2} \\
+        b_{m - 1} - \beta_{m - 1} s_m
+    \end{bmatrix}.
+\end{equation}
+
+\subsubsection{Natural end conditions}
+In the previous section, we required knowledge about the slopes at the end points in order to get anywhere.
+And alternative to this is to apply \textit{natural end conditions}, where we set
+\begin{equation}
+    g''(x_1) = 0
+    \quad\text{and}\quad
+    g''(x_m) = 0.
+\end{equation}
+% Requiring $C^2$ continuity at the interior points $x_2, \dots, x_{m-1}$ gives us $m - 2$ equations, for which we have
+This leads to the system
+\begin{equation}
+    \begin{bmatrix}
+        2 & 1 \\
+        \alpha_2 & 2 & \beta_2 \\
+        & \ddots & \ddots & \ddots \\
+        && \alpha_{m-1} & 2 & \beta_{m - 1} \\
+        &&& 1 & 2
+    \end{bmatrix}
+    \begin{bmatrix}
+        s_1 \\ s_2 \\ \vdots \\ s_{m - 1} \\ s_m
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        b_1 \\ b_2 \\ \vdots \\ b_{m - 1} \\ b_m
+    \end{bmatrix},
+\end{equation}
+with
+\begin{equation}
+    b_{1} = 3\frac{y_2 - y_1}{h_1}
+    \quad\text{and}\quad
+    b_m = 3 \frac{y_m - y_{m - 1}}{h_{m - 1}}.
+\end{equation}
