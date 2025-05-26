@@ -1,0 +1,40 @@
+\section{Divided differences}
+Central to our definition of B-splines is divided differences.
+One simple definition of a divided difference, denoted
+\begin{equation}
+    [x_0, x_1, \dots, x_k]f,
+\end{equation}
+is that it is the leading coefficient of the polynomial which interpolates $f$ at the points $x_0, x_1, \dots, x_k$.
+This is a rather cryptic definition, however it lends itself some nice properties.
+
+\subsection{Distinct points}
+If the points $x_i$ are distinct, we have that the polynomial $p$ is the Lagrange polynomial.
+As such, we find that
+\begin{equation}
+    [x_i]f = f(x_i).
+\end{equation}
+For $k \geq 1$, we can define the polynomial recursively.
+Let $p_0$ be the interpolating polynomial at $x_0, x_1, \dots, x_{k - 1}$ and $p_1$ the one at $x_1, x_2, \dots, x_k$.
+Then we can write
+\begin{equation}
+    p(x) = \frac{x_k - x}{x_k - x_0} p_0(x) + \frac{x - x_0}{x_k - x_0} p_0(x).
+\end{equation}
+From this, we deduce that
+\begin{equation}
+    [x_0, x_1, \dots, x_k]f = \frac{
+        [x_1, x_2, \dots, x_k]f
+        - [x_0, x_1, \dots, x_{k - 1}]f
+    }{x_k - x_0},
+\end{equation}
+such that for instance
+\begin{equation}
+    [x_0, x_1]f
+    = \frac{[x_1]f - [x_0]f}{x_1 - x_0}
+    = \frac{f(x_1) - f(x_0)}{x_1 - x_0}.
+\end{equation}
+
+\subsection{Repeated points}
+When there are repeated points, we utilize the Taylor expansion in order to define
+\begin{equation}
+    [x_0, \dots, x_k]f = [\underbrace{x_0, \dots, x_0}_{k+1}]f = \frac{f^{(k)}(x_0)}{k!}.
+\end{equation}
